@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ScrapBook</string>    
+    <string name="select_service">SELECT\nSERVICE</string>
+    <string name="select_pictures">SELECT\nPICTURES</string>
+    <string name="combine_scrap">COMBINE\nSCRAP</string>
+    <string name="save_or_upload">SAVE &amp;\n UPLOAD</string>
+    <string name="app_id">571145116300053</string>
+
+</resources>
