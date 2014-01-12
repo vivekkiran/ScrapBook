@@ -1,8 +1,6 @@
 package el.solde.scrapbook.loaders;
 
 import android.database.Cursor;
-import android.database.CursorIndexOutOfBoundsException;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
@@ -39,12 +37,10 @@ public class GalleryLinksLoader extends AsyncTask<Cursor, Void, ImageItem[]> {
 						.getColumnIndex(MediaStore.Images.Thumbnails.IMAGE_ID);
 				images[i] = new ImageItem(
 						("file://" + imageCursor.getString(dataColumnIndex)),
-						("file://" + getRealPathFromURI(Uri
-								.parse(MediaStore.Images.Media.getContentUri(
-										"external").toString()
-										+ "/"
-										+ imageCursor
-												.getString(dataColumnIndex2)))));
+						MediaStore.Images.Media.getContentUri("external")
+								.toString()
+								+ "/"
+								+ imageCursor.getString(dataColumnIndex2));
 			}
 		}
 		return images;
@@ -56,25 +52,5 @@ public class GalleryLinksLoader extends AsyncTask<Cursor, Void, ImageItem[]> {
 		// cacheImages
 		ScrapApp.CacheGalleryImages(result);
 		PictureSelect.getInstance().updateUserInterface(images);
-	}
-
-	// transform real image URI to real path
-	private String getRealPathFromURI(Uri contentUri) {
-		Cursor cursor = null;
-		try {
-			String[] proj = { MediaStore.Images.Media.DATA };
-			cursor = activity.getContentResolver().query(contentUri, proj,
-					null, null, null);
-			int column_index = cursor
-					.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-			cursor.moveToFirst();
-			return cursor.getString(column_index);
-		} catch (CursorIndexOutOfBoundsException ex) {
-			return orderBy;
-		} finally {
-			if (cursor != null) {
-				cursor.close();
-			}
-		}
 	}
 }
