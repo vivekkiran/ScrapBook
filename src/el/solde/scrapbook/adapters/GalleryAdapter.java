@@ -28,7 +28,10 @@ public class GalleryAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return mList.length;
+		if (mList != null)
+			return mList.length;
+		else
+			return 0;
 	}
 
 	@Override
