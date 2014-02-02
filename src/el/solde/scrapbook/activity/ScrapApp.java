@@ -74,8 +74,8 @@ public class ScrapApp extends Application {
 		// Create global configuration and initialize ImageLoader with this
 		// configuration
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
-				.showStubImage(R.drawable.btn_save_insta)
-				.showImageForEmptyUri(R.drawable.btn_save_insta)
+				// .showStubImage(R.drawable.btn_save_insta)
+				// .showImageForEmptyUri(R.drawable.btn_save_insta)
 				.bitmapConfig(Config.RGB_565).cacheOnDisc(true)
 				.cacheInMemory(true)
 				.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2).build();

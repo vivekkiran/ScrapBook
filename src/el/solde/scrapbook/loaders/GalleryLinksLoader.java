@@ -3,8 +3,6 @@ package el.solde.scrapbook.loaders;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentActivity;
-import el.solde.scrapbook.activity.Main;
 import el.solde.scrapbook.activity.PictureSelect;
 import el.solde.scrapbook.activity.ScrapApp;
 import el.solde.scrapbook.adapters.ImageItem;
@@ -13,15 +11,17 @@ import el.solde.scrapbook.adapters.ImageItem;
 //return ImageItem[] array with items 
 public class GalleryLinksLoader extends AsyncTask<Cursor, Void, ImageItem[]> {
 
-	FragmentActivity activity;
+	// instance of parent fragment
+	PictureSelect parFragment;
+
+	public GalleryLinksLoader() {
+		parFragment = PictureSelect.getInstance();
+	}
+
 	// sorting parameter
 	final String orderBy = MediaStore.Images.Thumbnails.IMAGE_ID;
 	// for array which is associated with Gridview
 	ImageItem[] images;
-
-	public GalleryLinksLoader() {
-		activity = Main.getInstance();
-	}
 
 	@Override
 	protected ImageItem[] doInBackground(Cursor... cursor) {
@@ -51,6 +51,7 @@ public class GalleryLinksLoader extends AsyncTask<Cursor, Void, ImageItem[]> {
 		super.onPostExecute(result);
 		// cacheImages
 		ScrapApp.CacheGalleryImages(result);
-		PictureSelect.getInstance().updateUserInterface(images);
+		// let the UI know about loading finished
+		parFragment.ImagesLoadComplete(PictureSelect.gallery);
 	}
 }

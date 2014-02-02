@@ -12,14 +12,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import el.solde.scrapbook.activity.R;
 import el.solde.scrapbook.activity.ScrapApp;
 
-public class GalleryAdapter extends BaseAdapter {
+public class PhotosAdapter extends BaseAdapter {
 
 	ImageItem[] mList;
 	LayoutInflater mInflater;
 	Context mContext;
 	ImageLoader imageLoader;
 
-	public GalleryAdapter(Context context, ImageItem[] _images) {
+	public PhotosAdapter(Context context, ImageItem[] _images) {
 		mContext = context;
 		mInflater = LayoutInflater.from(mContext);
 		this.mList = _images;

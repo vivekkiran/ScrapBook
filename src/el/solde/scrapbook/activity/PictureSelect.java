@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +20,8 @@ import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.LoginButton;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
-import el.solde.scrapbook.adapters.GalleryAdapter;
-import el.solde.scrapbook.adapters.ImageItem;
-import el.solde.scrapbook.loaders.FacebookImagesLoader;
+import el.solde.scrapbook.adapters.PhotosAdapter;
+import el.solde.scrapbook.loaders.FaceBookImagesLoader;
 import el.solde.scrapbook.loaders.GalleryLinksLoader;
 
 public class PictureSelect extends Fragment implements
@@ -33,11 +31,11 @@ public class PictureSelect extends Fragment implements
 	FragmentCommunicationListener mCallBack;
 
 	// arrays of images and thumbs for grid
-	private ImageItem[] images;
+	// private ImageItem[] images;
 
 	// services
-	final int gallery = 1;
-	final int facebook = 2;
+	public final static int gallery = 1;
+	public final static int facebook = 2;
 
 	// FB session state change listener
 	private Session.StatusCallback callback = new Session.StatusCallback() {
@@ -50,7 +48,7 @@ public class PictureSelect extends Fragment implements
 	private UiLifecycleHelper uiHelper;
 
 	// visible layout by defult - gallery
-	private static int currentService = 1;
+	private static int currentService = gallery;
 
 	private static PictureSelect _instance;
 
@@ -65,10 +63,6 @@ public class PictureSelect extends Fragment implements
 
 	public static PictureSelect getInstance() {
 		return _instance;
-	}
-
-	public ImageItem[] GetImageItems() {
-		return images;
 	}
 
 	public Session GetFacebookSession() {
@@ -158,9 +152,10 @@ public class PictureSelect extends Fragment implements
 		case gallery: {
 			// getting cursor with urls, this is async and takes some time
 			if (ScrapApp.GetGalleryImages() != null)
-				updateUserInterface(ScrapApp.GetGalleryImages());
+				ImagesLoadComplete(gallery);
 			else
 				getLoaderManager().initLoader(MEDIA_URL_LOADER, null, this);
+
 			break;
 		}
 		case facebook: {
@@ -224,7 +219,7 @@ public class PictureSelect extends Fragment implements
 					authButton.setVisibility(View.GONE);
 				}
 				if (ScrapApp.GetGalleryImages() != null)
-					updateUserInterface(ScrapApp.GetGalleryImages());
+					ImagesLoadComplete(gallery);
 				else
 					getLoaderManager().initLoader(MEDIA_URL_LOADER, null, this);
 				currentService = gallery;
@@ -236,15 +231,15 @@ public class PictureSelect extends Fragment implements
 				// setFragment() method on the Facebook LoginButton instance.
 				authButton1.setFragment(this);
 				authButton1.setReadPermissions("user_photos");
-				GridView gridImg = (GridView) getView().findViewById(
-						R.id.gallery_grid_view);
-				gridImg.setVisibility(View.GONE);
-				if (ScrapApp.GetFaceBookImages() != null) {
-					// use cached images instead on new request
-					updateUserInterface(ScrapApp.GetFaceBookImages());
+				Session thisSession = Session.getActiveSession();
+				if (!thisSession.isOpened()) {
+					authButton1.setVisibility(View.VISIBLE);
+					GridView gridImg = (GridView) getView().findViewById(
+							R.id.gallery_grid_view);
+					gridImg.setVisibility(View.GONE);
 				} else {
-					updateUserInterface(images);
-					new FacebookImagesLoader().execute();
+					authButton1.setVisibility(View.GONE);
+					LoadFaceBookPhotos(thisSession);
 				}
 				currentService = facebook;
 				break;
@@ -257,26 +252,68 @@ public class PictureSelect extends Fragment implements
 	// Facebook Part
 	private void onSessionStateChange(Session session, SessionState state,
 			Exception exception) {
+		LoginButton loginButton = (LoginButton) getActivity().findViewById(
+				R.id.authButton);
 		if (state.isOpened()) {
-			LoginButton loginButton = (LoginButton) getActivity().findViewById(
-					R.id.authButton);
 			if (loginButton.isShown()) {
 				loginButton.setVisibility(View.GONE);
 			}
+			LoadFaceBookPhotos(session);
 		} else if (state.isClosed()) {
-			Log.i("facebook", "Logged out...");
+			if (!loginButton.isShown()) {
+				loginButton.setVisibility(View.VISIBLE);
+			}
+		}
+	}
+
+	// this method is called by every image loader, when loading is complete and
+	// and images links are cached in SrapApp
+	// _service - this shows what Loader called method, if it equals
+	// currentService, then update UI
+	public void ImagesLoadComplete(int _service) {
+		if (_service == currentService) {
+			switch (_service) {
+			case gallery: {
+				updateUserInterface(gallery);
+			}
+			case facebook: {
+				updateUserInterface(facebook);
+			}
+			}
 		}
 	}
 
 	// method updates images gridview according to service selected
-	public void updateUserInterface(ImageItem[] _images) {
-		ImageItem[] currentImages = _images;
+	// THIS METHOS SHOULD NOT BE CALLED DIRECTLY ONLY THROUGH ImagesLoadComplete
+	private void updateUserInterface(int _service) {
 		GridView gridImg = (GridView) getView().findViewById(
 				R.id.gallery_grid_view);
 		if (gridImg.getVisibility() == View.GONE) {
 			gridImg.setVisibility(View.VISIBLE);
 		}
-		gridImg.setAdapter(new GalleryAdapter(this.getActivity(), currentImages));
+		switch (_service) {
+		case gallery: {
+			gridImg.setAdapter(new PhotosAdapter(this.getActivity(), ScrapApp
+					.GetGalleryImages()));
+			break;
+		}
+		case facebook: {
+			gridImg.setAdapter(new PhotosAdapter(this.getActivity(), ScrapApp
+					.GetFaceBookImages()));
+			break;
+		}
+		}
 	}
 
+	private void LoadFaceBookPhotos(Session session) {
+		if (session.isOpened()) {
+			if (ScrapApp.GetFaceBookImages() != null) {
+				// calling ImagesLoadComplete we check if current service is
+				// facebook and if we have to update UI
+				ImagesLoadComplete(facebook);
+			} else {
+				new FaceBookImagesLoader().execute();
+			}
+		}
+	}
 }
