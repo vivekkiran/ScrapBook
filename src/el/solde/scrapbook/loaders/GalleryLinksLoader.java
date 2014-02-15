@@ -8,6 +8,7 @@ import el.solde.scrapbook.adapters.ImageItem;
 
 //Here we create ImageItem for each image from gallery, load there thumbnail url and real url
 //return ImageItem[] array with items 
+
 public class GalleryLinksLoader extends GeneralImageLoader {
 
 	// type of loader
