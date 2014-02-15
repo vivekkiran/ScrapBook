@@ -7,5 +7,7 @@
     <string name="combine_scrap">COMBINE\nSCRAP</string>
     <string name="save_or_upload">SAVE &amp;\n UPLOAD</string>
     <string name="app_id">571145116300053</string>
+    <string name="prog_dialog_title">Loading Images</string>
+    <string name="prog_dialog_msg">It may take few minutes.</string>
 
 </resources>

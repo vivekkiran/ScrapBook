@@ -351,6 +351,8 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_logged_in=0x7f070009;
         public static final int com_facebook_usersettingsfragment_not_logged_in=0x7f07000a;
         public static final int combine_scrap=0x7f07001c;
+        public static final int prog_dialog_msg=0x7f070020;
+        public static final int prog_dialog_title=0x7f07001f;
         public static final int save_or_upload=0x7f07001d;
         public static final int select_pictures=0x7f07001b;
         public static final int select_service=0x7f07001a;
