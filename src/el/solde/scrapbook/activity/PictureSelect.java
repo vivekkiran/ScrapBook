@@ -15,13 +15,14 @@ import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.LoginButton;
 
 import el.solde.scrapbook.adapters.PhotosAdapter;
-import el.solde.scrapbook.loaders.FaceBookImagesLoader;
+import el.solde.scrapbook.instagram.InstaLoginDialog;
+import el.solde.scrapbook.loaders.FacebookImagesLoader;
 import el.solde.scrapbook.loaders.GalleryLinksLoader;
 
 public class PictureSelect extends Fragment {
 
 	// comunitacion interface between fragments
-	FragmentCommunicationListener mCallBack;
+	IFragmentCommunicationListener mCallBack;
 
 	// arrays of images and thumbs for grid
 	// private ImageItem[] images;
@@ -29,6 +30,7 @@ public class PictureSelect extends Fragment {
 	// services
 	public final static int gallery = 1;
 	public final static int facebook = 2;
+	public final static int instagram = 4;
 
 	// FB session state change listener
 	private Session.StatusCallback callback = new Session.StatusCallback() {
@@ -72,7 +74,7 @@ public class PictureSelect extends Fragment {
 		// This makes sure that the container activity has implemented
 		// the callback interface. If not, it throws an exception
 		try {
-			mCallBack = (FragmentCommunicationListener) activity;
+			mCallBack = (IFragmentCommunicationListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement ServiceSelectListener");
@@ -145,6 +147,10 @@ public class PictureSelect extends Fragment {
 			authButton.setReadPermissions("user_photos");
 			break;
 		}
+		case instagram: {
+			InstaLoginDialog insta_login = new InstaLoginDialog();
+			insta_login.show(getFragmentManager(), "InstagramLoginDialog");
+		}
 		}
 		return view;
 
@@ -155,7 +161,7 @@ public class PictureSelect extends Fragment {
 		int previousService = params.getInt("previousService");
 		if (service != previousService) {
 			switch (service) {
-			case gallery:
+			case gallery: {
 				currentService = gallery;
 				// here we get last visible service and hide it
 				LoginButton authButton = (LoginButton) getActivity()
@@ -165,7 +171,8 @@ public class PictureSelect extends Fragment {
 				}
 				new GalleryLinksLoader().execute();
 				break;
-			case facebook:
+			}
+			case facebook: {
 				currentService = facebook;
 				LoginButton authButton1 = (LoginButton) getActivity()
 						.findViewById(R.id.authButton);
@@ -181,9 +188,14 @@ public class PictureSelect extends Fragment {
 					gridImg.setVisibility(View.GONE);
 				} else {
 					authButton1.setVisibility(View.GONE);
-					new FaceBookImagesLoader().execute();
+					new FacebookImagesLoader().execute();
 				}
 				break;
+			}
+			case instagram: {
+				InstaLoginDialog insta_login = new InstaLoginDialog();
+				insta_login.show(getFragmentManager(), "InstagramLoginDialog");
+			}
 			}
 		} else {
 			currentService = service;
@@ -199,7 +211,7 @@ public class PictureSelect extends Fragment {
 			if (loginButton.isShown()) {
 				loginButton.setVisibility(View.GONE);
 			}
-			new FaceBookImagesLoader().execute();
+			new FacebookImagesLoader().execute();
 		} else if (state.isClosed()) {
 			if (!loginButton.isShown()) {
 				loginButton.setVisibility(View.VISIBLE);
@@ -211,7 +223,7 @@ public class PictureSelect extends Fragment {
 	// and images links are cached in SrapApp
 	// _service - this shows what Loader called method, if it equals
 	// currentService, then update UI
-	public void ImagesLoadComplete(int _service) {
+	public void OnImagesLoadComplete(int _service) {
 		if (_service == currentService) {
 			switch (_service) {
 			case gallery: {

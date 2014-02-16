@@ -77,6 +77,6 @@ public class GalleryLinksLoader extends GeneralImageLoader {
 		// cacheImages
 		ScrapApp.CacheGalleryImages(result);
 		// let the UI know about loading finished
-		parFragment.ImagesLoadComplete(PictureSelect.gallery);
+		parFragment.OnImagesLoadComplete(PictureSelect.gallery);
 	}
 }

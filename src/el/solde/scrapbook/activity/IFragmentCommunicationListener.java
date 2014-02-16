@@ -2,7 +2,7 @@ package el.solde.scrapbook.activity;
 
 import android.os.Bundle;
 
-public interface FragmentCommunicationListener {
+public interface IFragmentCommunicationListener {
 
 	public void ServiceSelected(Bundle params, Object receiverFragment);
 

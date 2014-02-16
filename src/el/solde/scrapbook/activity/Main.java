@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import el.solde.scrapbook.adapters.TabsAdapter;
 
 public class Main extends FragmentActivity implements OnClickListener,
-		FragmentCommunicationListener {
+		IFragmentCommunicationListener {
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
 	Tab selectServiceTab;

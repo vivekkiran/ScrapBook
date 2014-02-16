@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 
 public class ServiceSelect extends Fragment implements OnClickListener {
 
-	FragmentCommunicationListener mCallBack;
+	IFragmentCommunicationListener mCallBack;
 
 	public static ServiceSelect newInstance(String title) {
 
@@ -46,12 +46,16 @@ public class ServiceSelect extends Fragment implements OnClickListener {
 		ImageButton facebook = (ImageButton) getActivity().findViewById(
 				R.id.btn_facebook);
 		facebook.setOnClickListener(this);
+		ImageButton instagram = (ImageButton) getActivity().findViewById(
+				R.id.btn_instagram);
+		instagram.setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View v) {
 		final int gallery = 1;
 		final int facebook = 2;
+		final int instagram = 4;
 		Bundle par = new Bundle(); // bundle with parameters
 		switch (v.getId()) {
 		case R.id.btn_camera:
@@ -66,6 +70,11 @@ public class ServiceSelect extends Fragment implements OnClickListener {
 			mCallBack.ServiceSelected(par, PictureSelect.getInstance());
 			mCallBack.StorePreviousService(PictureSelect.GetCurrentService());
 			break;
+		case R.id.btn_instagram:
+			par.putInt("service", instagram);
+			mCallBack.ServiceSelected(par, PictureSelect.getInstance());
+			mCallBack.StorePreviousService(PictureSelect.GetCurrentService());
+			break;
 		}
 
 	}
@@ -76,7 +85,7 @@ public class ServiceSelect extends Fragment implements OnClickListener {
 		// This makes sure that the container activity has implemented
 		// the callback interface. If not, it throws an exception
 		try {
-			mCallBack = (FragmentCommunicationListener) activity;
+			mCallBack = (IFragmentCommunicationListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement ServiceSelectListener");

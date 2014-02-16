@@ -70,11 +70,11 @@
             android:contentDescription="@+id/Btn_picasa" />
 
         <ImageButton
-            android:id="@+id/btn_flickr"
+            android:id="@+id/btn_instagram"
             android:layout_marginTop="7dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_flickr"
+            android:background="@drawable/btn_instagram"
             android:layout_gravity="center_vertical|center_horizontal"
             android:contentDescription="@+id/Btn_flickr" />
     </LinearLayout>    

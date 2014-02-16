@@ -1,0 +1,57 @@
+package el.solde.scrapbook.instagram;
+
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Toast;
+import el.solde.scrapbook.activity.R;
+
+public class InstaLoginDialog extends DialogFragment {
+
+	private WebView webView;
+	static final int margin = 4;
+	static final int padding = 2;
+	private FragmentActivity context;
+
+	@SuppressLint("SetJavaScriptEnabled")
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		String client_id = getString(R.string.insta_client_id);
+		String insta_uri = getString(R.string.insta_url);
+		String url = "https://instagram.com/oauth/authorize/?client_id="
+				+ client_id + "&redirect_uri=" + insta_uri
+				+ "&response_type=token;";
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		// Get the layout inflater
+		LayoutInflater inflater = getActivity().getLayoutInflater();
+		View dialogView = inflater.inflate(R.layout.insta_login_dialog, null);
+		webView = (WebView) dialogView.findViewById(R.id.loginWebView);
+		webView.setVerticalScrollBarEnabled(false);
+		webView.setHorizontalScrollBarEnabled(false);
+		webView.setWebViewClient(new WebViewClient() {
+
+			public void onReceivedError(WebView view, int errorCode,
+					String description, String failingUrl) {
+				// Users will be notified in case there's an error (i.e. no
+				// internet connection)
+				Toast.makeText(context,
+						"some crap has happened =(" + description,
+						Toast.LENGTH_SHORT).show();
+			}
+		});
+		webView.getSettings().setJavaScriptEnabled(true);
+		webView.getSettings().setSaveFormData(false);
+		webView.loadUrl(url);
+		builder.setView(dialogView);
+		return builder.create();
+
+	}
+}

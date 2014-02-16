@@ -19,12 +19,12 @@ import el.solde.scrapbook.adapters.ImageItem;
 
 //Here we create ImageItem for each image from gallery, load there thumbnail url and real url
 //return ImageItem[] array with items 
-public class FaceBookImagesLoader extends GeneralImageLoader {
+public class FacebookImagesLoader extends GeneralImageLoader {
 
 	// instance of parent fragment
 	PictureSelect parFragment;
 
-	public FaceBookImagesLoader() {
+	public FacebookImagesLoader() {
 		parFragment = PictureSelect.getInstance();
 	}
 
@@ -80,7 +80,7 @@ public class FaceBookImagesLoader extends GeneralImageLoader {
 		// cacheImages
 		ScrapApp.CacheFaceBookImages(result);
 		// let the UI know about loading finished
-		parFragment.ImagesLoadComplete(PictureSelect.facebook);
+		parFragment.OnImagesLoadComplete(PictureSelect.facebook);
 	}
 
 }
