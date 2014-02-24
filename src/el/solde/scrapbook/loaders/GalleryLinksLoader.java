@@ -55,6 +55,7 @@ public class GalleryLinksLoader extends GeneralImageLoader {
 									.toString()
 									+ "/"
 									+ imageCursor.getString(dataColumnIndex2));
+					publishProgress(images);
 				}
 			}
 
@@ -64,10 +65,12 @@ public class GalleryLinksLoader extends GeneralImageLoader {
 	}
 
 	@Override
-	protected void onProgressUpdate(Integer... values) {
+	protected void onProgressUpdate(ImageItem[]... values) {
 		// TODO Auto-generated method stub
 		super.onProgressUpdate(values);
-
+		ScrapApp.CacheGalleryImages(values[0]);
+		// let the UI know about loading finished
+		parFragment.OnImagesLoadComplete(PictureSelect.gallery);
 	}
 
 	@Override

@@ -25,7 +25,7 @@ public class FacebookImagesLoader extends GeneralImageLoader {
 	PictureSelect parFragment;
 
 	public FacebookImagesLoader() {
-		parFragment = PictureSelect.getInstance();
+		parFragment = GetParentFrament();
 	}
 
 	// sorting parameter
@@ -63,6 +63,7 @@ public class FacebookImagesLoader extends GeneralImageLoader {
 												photosArr.getJSONObject(i)
 														.getString("src_big")
 														.toString());
+										publishProgress(images);
 									}
 								} catch (JSONException ex) {
 
@@ -72,6 +73,15 @@ public class FacebookImagesLoader extends GeneralImageLoader {
 					}).executeAndWait();
 		}
 		return images;
+	}
+
+	@Override
+	protected void onProgressUpdate(ImageItem[]... values) {
+		// TODO Auto-generated method stub
+		super.onProgressUpdate(values);
+		ScrapApp.CacheFaceBookImages(values[0]);
+		// let the UI know about loading finished
+		parFragment.OnImagesLoadComplete(PictureSelect.facebook);
 	}
 
 	@Override

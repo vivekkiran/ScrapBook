@@ -19,6 +19,19 @@ public class PhotosAdapter extends BaseAdapter {
 	Context mContext;
 	ImageLoader imageLoader;
 
+	public PhotosAdapter() {
+		imageLoader = ScrapApp.getImageLoader();
+	}
+
+	public void SetContext(Context context) {
+		this.mContext = context;
+		mInflater = LayoutInflater.from(mContext);
+	}
+
+	public void SetImagesToShow(ImageItem[] images) {
+		this.mList = images;
+	}
+
 	public PhotosAdapter(Context context, ImageItem[] _images) {
 		mContext = context;
 		mInflater = LayoutInflater.from(mContext);

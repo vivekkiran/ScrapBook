@@ -15,9 +15,9 @@ import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.LoginButton;
 
 import el.solde.scrapbook.adapters.PhotosAdapter;
-import el.solde.scrapbook.instagram.InstaLoginDialog;
 import el.solde.scrapbook.loaders.FacebookImagesLoader;
 import el.solde.scrapbook.loaders.GalleryLinksLoader;
+import el.solde.scrapbook.loaders.InstagramImagesLoader;
 
 public class PictureSelect extends Fragment {
 
@@ -41,6 +41,8 @@ public class PictureSelect extends Fragment {
 		}
 	};
 	private UiLifecycleHelper uiHelper;
+
+	private PhotosAdapter photosAdapter = null;
 
 	// visible layout by defult - gallery
 	private static int currentService = gallery;
@@ -148,8 +150,9 @@ public class PictureSelect extends Fragment {
 			break;
 		}
 		case instagram: {
-			InstaLoginDialog insta_login = new InstaLoginDialog();
-			insta_login.show(getFragmentManager(), "InstagramLoginDialog");
+			InstagramImagesLoader insta = new InstagramImagesLoader();
+			insta.execute();
+			break;
 		}
 		}
 		return view;
@@ -193,8 +196,10 @@ public class PictureSelect extends Fragment {
 				break;
 			}
 			case instagram: {
-				InstaLoginDialog insta_login = new InstaLoginDialog();
-				insta_login.show(getFragmentManager(), "InstagramLoginDialog");
+				currentService = instagram;
+				InstagramImagesLoader insta = new InstagramImagesLoader();
+				insta.execute();
+				break;
 			}
 			}
 		} else {
@@ -234,6 +239,10 @@ public class PictureSelect extends Fragment {
 				updateUserInterface(facebook);
 				break;
 			}
+			case instagram: {
+				updateUserInterface(instagram);
+				break;
+			}
 			}
 		}
 	}
@@ -241,6 +250,11 @@ public class PictureSelect extends Fragment {
 	// method updates images gridview according to service selected
 	// THIS METHOS SHOULD NOT BE CALLED DIRECTLY ONLY THROUGH ImagesLoadComplete
 	private void updateUserInterface(int _service) {
+		if (photosAdapter == null) {
+			// create adapter and set context
+			photosAdapter = new PhotosAdapter();
+			photosAdapter.SetContext(this.getActivity());
+		}
 		GridView gridImg = (GridView) getView().findViewById(
 				R.id.gallery_grid_view);
 		if (gridImg.getVisibility() == View.GONE) {
@@ -248,13 +262,21 @@ public class PictureSelect extends Fragment {
 		}
 		switch (_service) {
 		case gallery: {
-			gridImg.setAdapter(new PhotosAdapter(this.getActivity(), ScrapApp
-					.GetGalleryImages()));
+			photosAdapter.SetImagesToShow(ScrapApp.GetGalleryImages());
+			photosAdapter.notifyDataSetChanged();
+			gridImg.setAdapter(photosAdapter);
 			break;
 		}
 		case facebook: {
-			gridImg.setAdapter(new PhotosAdapter(this.getActivity(), ScrapApp
-					.GetFaceBookImages()));
+			photosAdapter.SetImagesToShow(ScrapApp.GetFaceBookImages());
+			photosAdapter.notifyDataSetChanged();
+			gridImg.setAdapter(photosAdapter);
+			break;
+		}
+		case instagram: {
+			photosAdapter.SetImagesToShow(ScrapApp.GetInstagramImages());
+			photosAdapter.notifyDataSetChanged();
+			gridImg.setAdapter(photosAdapter);
 			break;
 		}
 		}

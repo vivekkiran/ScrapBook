@@ -5,7 +5,7 @@ import el.solde.scrapbook.activity.PictureSelect;
 import el.solde.scrapbook.adapters.ImageItem;
 
 public abstract class GeneralImageLoader extends
-		AsyncTask<Void, Integer, ImageItem[]> {
+		AsyncTask<Void, ImageItem[], ImageItem[]> {
 
 	private PictureSelect parFragment;
 

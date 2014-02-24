@@ -13,6 +13,7 @@ import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.Toast;
 import el.solde.scrapbook.activity.R;
+import el.solde.scrapbook.activity.ScrapApp;
 
 public class InstaLoginDialog extends DialogFragment {
 
@@ -45,7 +46,9 @@ public class InstaLoginDialog extends DialogFragment {
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
 				if (url.startsWith(insta_uri)) {
 					String parts[] = url.split("=");
-					request_token = parts[1]; // This is your request token.
+					// This is our request token
+					ScrapApp.SavePreference("insta_token", parts[1]);
+					CloseDialog();
 					return true;
 				}
 				return super.shouldOverrideUrlLoading(view, url);
@@ -69,5 +72,9 @@ public class InstaLoginDialog extends DialogFragment {
 		builder.setView(dialogView);
 		return builder.create();
 
+	}
+
+	public void CloseDialog() {
+		this.dismiss();
 	}
 }

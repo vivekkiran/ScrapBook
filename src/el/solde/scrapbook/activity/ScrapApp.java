@@ -25,7 +25,7 @@ public class ScrapApp extends Application {
 	private static ImageItem[] galleryImages;
 	private static ImageItem[] faceBookImages;
 	private static ImageItem[] picasaImages;
-	private static ImageItem[] flickrImages;
+	private static ImageItem[] InstagramImages;
 
 	@Override
 	public void onCreate() {
@@ -122,23 +122,41 @@ public class ScrapApp extends Application {
 
 	// get cachedImages or null
 	public static ImageItem[] GetPicasaImages() {
-		if (flickrImages != null)
+		if (InstagramImages != null)
 			return picasaImages;
 		else
 			return null;
 	}
 
 	// cache urls to images while app is alive
-	public static void CacheFlickrImages(ImageItem[] _images) {
-		flickrImages = _images;
+	public static void CacheInstagramImages(ImageItem[] _images) {
+		InstagramImages = _images;
 	}
 
 	// get cachedImages or null
-	public static ImageItem[] GetFlickrImages() {
-		if (flickrImages != null)
-			return flickrImages;
+	public static ImageItem[] GetInstagramImages() {
+		if (InstagramImages != null)
+			return InstagramImages;
 		else
 			return null;
+	}
+
+	public static void SavePreference(String name, Object preference) {
+		editPref = pref.edit();
+		if (preference.getClass().equals(Integer.TYPE)) {
+			editPref.putInt(name, (Integer) preference);
+		}
+		if (preference.getClass().equals(String.class)) {
+			editPref.putString(name, (String) preference);
+		}
+		if (preference.getClass().equals(Boolean.TYPE)) {
+			editPref.putBoolean(name, (Boolean) preference);
+		}
+		editPref.commit();
+	}
+
+	public static SharedPreferences GetPreference() {
+		return pref;
 	}
 
 }
