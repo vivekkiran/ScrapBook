@@ -5,13 +5,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
-import android.widget.Toast;
 import el.solde.scrapbook.activity.R;
 import el.solde.scrapbook.activity.ScrapApp;
 
@@ -20,8 +18,6 @@ public class InstaLoginDialog extends DialogFragment {
 	private WebView webView;
 	static final int margin = 4;
 	static final int padding = 2;
-	private FragmentActivity context;
-	private String request_token;
 
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
@@ -29,9 +25,8 @@ public class InstaLoginDialog extends DialogFragment {
 		super.onCreate(savedInstanceState);
 		String client_id = getString(R.string.insta_client_id);
 		final String insta_uri = getString(R.string.insta_url);
-		String url = "https://instagram.com/oauth/authorize/?client_id="
-				+ client_id + "&redirect_uri=" + insta_uri
-				+ "&response_type=token;";
+		String url = getString(R.string.insta_auth_url) + client_id
+				+ "&redirect_uri=" + insta_uri + "&response_type=token;";
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		// Get the layout inflater
 		LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -58,9 +53,6 @@ public class InstaLoginDialog extends DialogFragment {
 					String description, String failingUrl) {
 				// Users will be notified in case there's an error (i.e. no
 				// internet connection)
-				Toast.makeText(context,
-						"some crap has happened =(" + description,
-						Toast.LENGTH_SHORT).show();
 			}
 		});
 		webView.getSettings().setJavaScriptEnabled(true);

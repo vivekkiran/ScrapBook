@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
 import com.facebook.Session;
@@ -250,6 +252,7 @@ public class PictureSelect extends Fragment {
 	// method updates images gridview according to service selected
 	// THIS METHOS SHOULD NOT BE CALLED DIRECTLY ONLY THROUGH ImagesLoadComplete
 	private void updateUserInterface(int _service) {
+		final int service = _service;
 		if (photosAdapter == null) {
 			// create adapter and set context
 			photosAdapter = new PhotosAdapter();
@@ -257,10 +260,23 @@ public class PictureSelect extends Fragment {
 		}
 		GridView gridImg = (GridView) getView().findViewById(
 				R.id.gallery_grid_view);
+		gridImg.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				ImageDisplayDialog imgDisplay = new ImageDisplayDialog();
+				Bundle params = new Bundle();
+				params.putInt("position", position);
+				params.putInt("service", service);
+				imgDisplay.setArguments(params);
+				imgDisplay.show(getFragmentManager(), null);
+			}
+		});
 		if (gridImg.getVisibility() == View.GONE) {
 			gridImg.setVisibility(View.VISIBLE);
 		}
-		switch (_service) {
+		switch (service) {
 		case gallery: {
 			photosAdapter.SetImagesToShow(ScrapApp.GetGalleryImages());
 			photosAdapter.notifyDataSetChanged();

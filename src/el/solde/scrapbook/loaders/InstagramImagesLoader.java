@@ -96,7 +96,6 @@ public class InstagramImagesLoader extends GeneralImageLoader {
 			HttpResponse response = httpClient.execute(httpget);
 			String responseBody = EntityUtils.toString(response.getEntity());
 			JSONObject retrieved = new JSONObject(responseBody);
-			JSONObject pagination = retrieved.getJSONObject("pagination");
 			JSONArray imageObjs = retrieved.getJSONArray("data");
 			// get every data JSON object, get images object, get thumbnail and
 			// standart resolution of image

@@ -11,5 +11,6 @@
     <string name="prog_dialog_msg">It may take few minutes.</string>
     <string name="insta_client_id">c0adbaa33c8c44478709f582fd7136be</string>    
     <string name="insta_url">http://www.it-girlinitworld.com/</string>
+    <string name="insta_auth_url">https://instagram.com/oauth/authorize/?client_id=</string>
 
 </resources>
