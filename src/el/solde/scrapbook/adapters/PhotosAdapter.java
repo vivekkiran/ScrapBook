@@ -1,6 +1,7 @@
 package el.solde.scrapbook.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,10 +48,14 @@ public class PhotosAdapter extends BaseAdapter {
 			return 0;
 	}
 
+	// returns item of ImageItem type
 	@Override
-	public Object getItem(int position) {
-		// TODO Auto-generated method stub
-		return null;
+	public ImageItem getItem(int position) {
+		int _position = position;
+		if (getCount() != 0) {
+			return mList[_position];
+		} else
+			return null;
 	}
 
 	@Override
@@ -66,7 +71,11 @@ public class PhotosAdapter extends BaseAdapter {
 		}
 		final ImageView imageView = (ImageView) convertView
 				.findViewById(R.id.image);
-		imageLoader.displayImage(mList[position].getThumbnail(), imageView);
+		try {
+			imageLoader.displayImage(mList[position].thumbnail, imageView);
+		} catch (NullPointerException npe) {
+			Log.d("exception", "NullPointer: " + npe.getMessage());
+		}
 
 		return convertView;
 

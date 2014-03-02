@@ -18,7 +18,6 @@ import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 public class ImageDisplayDialog extends DialogFragment {
-	private int position, service;
 	DisplayImageOptions options;
 	String bigImage;
 
@@ -30,8 +29,8 @@ public class ImageDisplayDialog extends DialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		position = getArguments().getInt("position");
-		service = getArguments().getInt("service");
+		// get url to image
+		bigImage = getArguments().getString("imageUrl");
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		// Get the layout inflater
 		LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -39,26 +38,12 @@ public class ImageDisplayDialog extends DialogFragment {
 		ImageView imageView = (ImageView) dialogView.findViewById(R.id.image);
 		final ProgressBar spinner = (ProgressBar) dialogView
 				.findViewById(R.id.loading);
+
 		options = new DisplayImageOptions.Builder()
 				.resetViewBeforeLoading(true).cacheOnDisc(true)
 				.imageScaleType(ImageScaleType.EXACTLY)
 				.bitmapConfig(Bitmap.Config.ARGB_8888)
 				.displayer(new FadeInBitmapDisplayer(300)).build();
-		// get url to image
-		switch (service) {
-		case PictureSelect.gallery: {
-			bigImage = ScrapApp.GetGalleryImages()[position].getSource();
-			break;
-		}
-		case PictureSelect.facebook: {
-			bigImage = ScrapApp.GetFaceBookImages()[position].getSource();
-			break;
-		}
-		case PictureSelect.instagram: {
-			bigImage = ScrapApp.GetInstagramImages()[position].getSource();
-			break;
-		}
-		}
 
 		ScrapApp.getImageLoader().displayImage(bigImage, imageView, options,
 				new SimpleImageLoadingListener() {

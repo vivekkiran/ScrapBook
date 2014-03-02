@@ -16,6 +16,7 @@ import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.LoginButton;
 
+import el.solde.scrapbook.adapters.ImageItem;
 import el.solde.scrapbook.adapters.PhotosAdapter;
 import el.solde.scrapbook.loaders.FacebookImagesLoader;
 import el.solde.scrapbook.loaders.GalleryLinksLoader;
@@ -265,12 +266,14 @@ public class PictureSelect extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				ImageDisplayDialog imgDisplay = new ImageDisplayDialog();
-				Bundle params = new Bundle();
-				params.putInt("position", position);
-				params.putInt("service", service);
-				imgDisplay.setArguments(params);
-				imgDisplay.show(getFragmentManager(), null);
+				ImageItem clickedItem = photosAdapter.getItem(position);
+				if (clickedItem != null) {
+					ImageDisplayDialog imgDisplay = new ImageDisplayDialog();
+					Bundle params = new Bundle();
+					params.putString("imageUrl", clickedItem.source);
+					imgDisplay.setArguments(params);
+					imgDisplay.show(getFragmentManager(), null);
+				}
 			}
 		});
 		if (gridImg.getVisibility() == View.GONE) {
