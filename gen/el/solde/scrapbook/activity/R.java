@@ -214,7 +214,7 @@ containing a value of this type.
         public static final int com_facebook_list_section_header_background=0x7f02001c;
         public static final int com_facebook_loginbutton_silver=0x7f02001d;
         public static final int com_facebook_logo=0x7f02001e;
-        public static final int com_facebook_picker_default_separator_color=0x7f02003b;
+        public static final int com_facebook_picker_default_separator_color=0x7f02003d;
         public static final int com_facebook_picker_item_background=0x7f02001f;
         public static final int com_facebook_picker_list_focused=0x7f020020;
         public static final int com_facebook_picker_list_longpressed=0x7f020021;
@@ -235,14 +235,16 @@ containing a value of this type.
         public static final int item_shadow=0x7f020030;
         public static final int last_scrap=0x7f020031;
         public static final int logo=0x7f020032;
-        public static final int tab1=0x7f020033;
-        public static final int tab1_bar=0x7f020034;
-        public static final int tab2=0x7f020035;
-        public static final int tab2_bar=0x7f020036;
-        public static final int tab3=0x7f020037;
-        public static final int tab3_bar=0x7f020038;
-        public static final int tab4=0x7f020039;
-        public static final int tab4_bar=0x7f02003a;
+        public static final int picasa_dia=0x7f020033;
+        public static final int picasa_sign_in=0x7f020034;
+        public static final int tab1=0x7f020035;
+        public static final int tab1_bar=0x7f020036;
+        public static final int tab2=0x7f020037;
+        public static final int tab2_bar=0x7f020038;
+        public static final int tab3=0x7f020039;
+        public static final int tab3_bar=0x7f02003a;
+        public static final int tab4=0x7f02003b;
+        public static final int tab4_bar=0x7f02003c;
     }
     public static final class id {
         public static final int Btn_camera=0x7f04002e;
@@ -324,9 +326,10 @@ containing a value of this type.
         public static final int insta_login_dialog=0x7f030011;
         public static final int main=0x7f030012;
         public static final int pic_grid_item=0x7f030013;
-        public static final int pictures_select=0x7f030014;
-        public static final int save_or_upload=0x7f030015;
-        public static final int service_select=0x7f030016;
+        public static final int picasa_login_dialog=0x7f030014;
+        public static final int pictures_select=0x7f030015;
+        public static final int save_or_upload=0x7f030016;
+        public static final int service_select=0x7f030017;
     }
     public static final class string {
         public static final int app_id=0x7f07001e;
