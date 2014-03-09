@@ -247,24 +247,25 @@ containing a value of this type.
         public static final int tab4_bar=0x7f02003c;
     }
     public static final class id {
-        public static final int Btn_camera=0x7f04002e;
-        public static final int Btn_facebook=0x7f040032;
-        public static final int Btn_flickr=0x7f040036;
-        public static final int Btn_gallery=0x7f040030;
-        public static final int Btn_picasa=0x7f040034;
+        public static final int Btn_camera=0x7f040033;
+        public static final int Btn_facebook=0x7f040037;
+        public static final int Btn_flickr=0x7f04003b;
+        public static final int Btn_gallery=0x7f040035;
+        public static final int Btn_picasa=0x7f040039;
         public static final int Btn_picture_select=0x7f040007;
         public static final int Btn_select_service=0x7f040005;
         public static final int Image=0x7f040021;
-        public static final int Last_scrap_btn=0x7f040038;
-        public static final int Logo=0x7f04002b;
-        public static final int all_container=0x7f04002a;
-        public static final int authButton=0x7f040028;
-        public static final int btn_camera=0x7f04002d;
+        public static final int Last_scrap_btn=0x7f04003d;
+        public static final int LoginButton=0x7f04002b;
+        public static final int Logo=0x7f040030;
+        public static final int all_container=0x7f04002f;
+        public static final int authButton=0x7f04002d;
+        public static final int btn_camera=0x7f040032;
         public static final int btn_combine_image=0x7f040008;
-        public static final int btn_facebook=0x7f040031;
-        public static final int btn_gallery=0x7f04002f;
-        public static final int btn_instagram=0x7f040035;
-        public static final int btn_picasa=0x7f040033;
+        public static final int btn_facebook=0x7f040036;
+        public static final int btn_gallery=0x7f040034;
+        public static final int btn_instagram=0x7f04003a;
+        public static final int btn_picasa=0x7f040038;
         public static final int btn_picture_select=0x7f040006;
         public static final int btn_save_or_upload=0x7f040009;
         public static final int btn_select_service=0x7f040004;
@@ -289,19 +290,23 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_logo_image=0x7f04001c;
         public static final int com_facebook_usersettingsfragment_profile_name=0x7f04001d;
         public static final int edit=0x7f040023;
-        public static final int gallery_grid_view=0x7f040027;
+        public static final int gallery_grid_view=0x7f04002c;
         public static final int image=0x7f040020;
         public static final int imageContainer=0x7f040026;
         public static final int insta_login=0x7f04001f;
         public static final int large=0x7f040002;
-        public static final int last_scrap_btn=0x7f040037;
+        public static final int last_scrap_btn=0x7f04003c;
         public static final int loading=0x7f040022;
+        public static final int loginButton=0x7f04002a;
+        public static final int loginTB=0x7f040027;
         public static final int loginWebView=0x7f040024;
         public static final int normal=0x7f040001;
         public static final int pager=0x7f040025;
+        public static final int passwordTB=0x7f040028;
         public static final int picker_subtitle=0x7f040019;
-        public static final int service_buttons_container=0x7f04002c;
-        public static final int service_select_container=0x7f040029;
+        public static final int rememberMe=0x7f040029;
+        public static final int service_buttons_container=0x7f040031;
+        public static final int service_select_container=0x7f04002e;
         public static final int small=0x7f040000;
         public static final int tabs_layout=0x7f040003;
     }
@@ -360,18 +365,23 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_logged_in=0x7f070009;
         public static final int com_facebook_usersettingsfragment_not_logged_in=0x7f07000a;
         public static final int combine_scrap=0x7f07001c;
+        public static final int emailLogin=0x7f070025;
         public static final int insta_auth_url=0x7f070023;
         public static final int insta_client_id=0x7f070021;
         public static final int insta_url=0x7f070022;
+        public static final int passwordLogin=0x7f070024;
         public static final int prog_dialog_msg=0x7f070020;
         public static final int prog_dialog_title=0x7f07001f;
+        public static final int rememberMe=0x7f070026;
         public static final int save_or_upload=0x7f07001d;
         public static final int select_pictures=0x7f07001b;
         public static final int select_service=0x7f07001a;
     }
     public static final class style {
+        public static final int LoginInputFields=0x7f080002;
         public static final int com_facebook_loginview_default_style=0x7f080000;
         public static final int com_facebook_loginview_silver_style=0x7f080001;
+        public static final int loginBtnStyle=0x7f080003;
     }
     public static final class styleable {
         /** Attributes that can be used with a com_facebook_friend_picker_fragment.

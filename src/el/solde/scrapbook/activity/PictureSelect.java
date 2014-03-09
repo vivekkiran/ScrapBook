@@ -21,6 +21,8 @@ import el.solde.scrapbook.adapters.PhotosAdapter;
 import el.solde.scrapbook.loaders.FacebookImagesLoader;
 import el.solde.scrapbook.loaders.GalleryLinksLoader;
 import el.solde.scrapbook.loaders.InstagramImagesLoader;
+import el.solde.scrapbook.loaders.PicasaImagesLoader;
+import el.solde.scrapbook.picasa.PicasaLoginDialog;
 
 public class PictureSelect extends Fragment {
 
@@ -33,6 +35,7 @@ public class PictureSelect extends Fragment {
 	// services
 	public final static int gallery = 1;
 	public final static int facebook = 2;
+	public final static int picasa = 3;
 	public final static int instagram = 4;
 
 	// FB session state change listener
@@ -152,6 +155,17 @@ public class PictureSelect extends Fragment {
 			authButton.setReadPermissions("user_photos");
 			break;
 		}
+		case picasa: {
+			// check if we have images in cache
+			if (ScrapApp.GetPicasaImages() != null) {
+				PicasaImagesLoader loader = new PicasaImagesLoader();
+				loader.execute();
+			} else {
+				PicasaLoginDialog dialog = new PicasaLoginDialog();
+				dialog.show(getFragmentManager(), "Picasa Login");
+			}
+			break;
+		}
 		case instagram: {
 			InstagramImagesLoader insta = new InstagramImagesLoader();
 			insta.execute();
@@ -198,6 +212,18 @@ public class PictureSelect extends Fragment {
 				}
 				break;
 			}
+			case picasa: {
+				currentService = picasa;
+				// check if we have images in cache
+				if (ScrapApp.GetPicasaImages() != null) {
+					PicasaImagesLoader loader = new PicasaImagesLoader();
+					loader.execute();
+				} else {
+					PicasaLoginDialog dialog = new PicasaLoginDialog();
+					dialog.show(getFragmentManager(), "Picasa Login");
+				}
+				break;
+			}
 			case instagram: {
 				currentService = instagram;
 				InstagramImagesLoader insta = new InstagramImagesLoader();
@@ -232,22 +258,9 @@ public class PictureSelect extends Fragment {
 	// _service - this shows what Loader called method, if it equals
 	// currentService, then update UI
 	public void OnImagesLoadComplete(int _service) {
-		if (_service == currentService) {
-			switch (_service) {
-			case gallery: {
-				updateUserInterface(gallery);
-				break;
-			}
-			case facebook: {
-				updateUserInterface(facebook);
-				break;
-			}
-			case instagram: {
-				updateUserInterface(instagram);
-				break;
-			}
-			}
-		}
+		int service = _service;
+		if (service == currentService)
+			updateUserInterface(service);
 	}
 
 	// method updates images gridview according to service selected
@@ -288,6 +301,12 @@ public class PictureSelect extends Fragment {
 		}
 		case facebook: {
 			photosAdapter.SetImagesToShow(ScrapApp.GetFaceBookImages());
+			photosAdapter.notifyDataSetChanged();
+			gridImg.setAdapter(photosAdapter);
+			break;
+		}
+		case picasa: {
+			photosAdapter.SetImagesToShow(ScrapApp.GetPicasaImages());
 			photosAdapter.notifyDataSetChanged();
 			gridImg.setAdapter(photosAdapter);
 			break;

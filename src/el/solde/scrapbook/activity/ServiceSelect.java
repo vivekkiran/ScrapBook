@@ -46,6 +46,9 @@ public class ServiceSelect extends Fragment implements OnClickListener {
 		ImageButton facebook = (ImageButton) getActivity().findViewById(
 				R.id.btn_facebook);
 		facebook.setOnClickListener(this);
+		ImageButton picasa = (ImageButton) getActivity().findViewById(
+				R.id.btn_picasa);
+		picasa.setOnClickListener(this);
 		ImageButton instagram = (ImageButton) getActivity().findViewById(
 				R.id.btn_instagram);
 		instagram.setOnClickListener(this);
@@ -55,6 +58,7 @@ public class ServiceSelect extends Fragment implements OnClickListener {
 	public void onClick(View v) {
 		final int gallery = 1;
 		final int facebook = 2;
+		final int picasa = 3;
 		final int instagram = 4;
 		Bundle par = new Bundle(); // bundle with parameters
 		switch (v.getId()) {
@@ -72,6 +76,11 @@ public class ServiceSelect extends Fragment implements OnClickListener {
 			break;
 		case R.id.btn_instagram:
 			par.putInt("service", instagram);
+			mCallBack.ServiceSelected(par, PictureSelect.getInstance());
+			mCallBack.StorePreviousService(PictureSelect.GetCurrentService());
+			break;
+		case R.id.btn_picasa:
+			par.putInt("service", picasa);
 			mCallBack.ServiceSelected(par, PictureSelect.getInstance());
 			mCallBack.StorePreviousService(PictureSelect.GetCurrentService());
 			break;
