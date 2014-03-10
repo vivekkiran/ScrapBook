@@ -122,7 +122,7 @@ public class ScrapApp extends Application {
 
 	// get cachedImages or null
 	public static ImageItem[] GetPicasaImages() {
-		if (InstagramImages != null)
+		if (picasaImages != null)
 			return picasaImages;
 		else
 			return null;

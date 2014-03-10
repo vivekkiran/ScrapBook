@@ -22,7 +22,6 @@ import el.solde.scrapbook.loaders.FacebookImagesLoader;
 import el.solde.scrapbook.loaders.GalleryLinksLoader;
 import el.solde.scrapbook.loaders.InstagramImagesLoader;
 import el.solde.scrapbook.loaders.PicasaImagesLoader;
-import el.solde.scrapbook.picasa.PicasaLoginDialog;
 
 public class PictureSelect extends Fragment {
 
@@ -157,13 +156,8 @@ public class PictureSelect extends Fragment {
 		}
 		case picasa: {
 			// check if we have images in cache
-			if (ScrapApp.GetPicasaImages() != null) {
-				PicasaImagesLoader loader = new PicasaImagesLoader();
-				loader.execute();
-			} else {
-				PicasaLoginDialog dialog = new PicasaLoginDialog();
-				dialog.show(getFragmentManager(), "Picasa Login");
-			}
+			PicasaImagesLoader loader = new PicasaImagesLoader();
+			loader.execute();
 			break;
 		}
 		case instagram: {
@@ -215,13 +209,8 @@ public class PictureSelect extends Fragment {
 			case picasa: {
 				currentService = picasa;
 				// check if we have images in cache
-				if (ScrapApp.GetPicasaImages() != null) {
-					PicasaImagesLoader loader = new PicasaImagesLoader();
-					loader.execute();
-				} else {
-					PicasaLoginDialog dialog = new PicasaLoginDialog();
-					dialog.show(getFragmentManager(), "Picasa Login");
-				}
+				PicasaImagesLoader loader = new PicasaImagesLoader();
+				loader.execute();
 				break;
 			}
 			case instagram: {

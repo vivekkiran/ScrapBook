@@ -1,9 +1,5 @@
 package el.solde.scrapbook.picasa;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -16,12 +12,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-
-import com.google.gdata.client.photos.PicasawebService;
-import com.google.gdata.data.photos.AlbumFeed;
-import com.google.gdata.util.AuthenticationException;
-import com.google.gdata.util.ServiceException;
-
 import el.solde.scrapbook.activity.R;
 import el.solde.scrapbook.activity.ScrapApp;
 import el.solde.scrapbook.loaders.PicasaImagesLoader;
@@ -50,96 +40,48 @@ public class PicasaLoginDialog extends DialogFragment {
 		final EditText password = (EditText) dialogView
 				.findViewById(R.id.passwordTB);
 		rememberMe = (CheckBox) dialogView.findViewById(R.id.rememberMe);
-		// check if we have saved Credentials, if have just call GetUserMedia
-		// with saved credentials
-		// if we don't have - show login dialog
-		if (ScrapApp.GetPreference().getString("login", "") != "") {
-			logBtn.setVisibility(View.GONE);
-			email.setVisibility(View.GONE);
-			password.setVisibility(View.GONE);
-			rememberMe.setVisibility(View.GONE);
-			AlbumFeed feed = GetUserMedia(
-					ScrapApp.GetPreference().getString("login", ""), ScrapApp
-							.GetPreference().getString("password", ""));
-			if (feed != null) {
-				PicasaImagesLoader loader = new PicasaImagesLoader(feed);
-				loader.execute();
+
+		email.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				EditText e1 = (EditText) v;
+				if (e1.getText().toString().equalsIgnoreCase("Email")) {
+					e1.setText("");
+				}
 			}
-			CloseDialog();
-		} else {
-			email.setOnClickListener(new OnClickListener() {
+		});
 
-				@Override
-				public void onClick(View v) {
-					EditText e1 = (EditText) v;
-					if (e1.getText().toString().equalsIgnoreCase("Email")) {
-						e1.setText("");
-					}
+		password.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				EditText e1 = (EditText) v;
+				if (e1.getText().toString().equalsIgnoreCase("Password")) {
+					e1.setTransformationMethod(PasswordTransformationMethod
+							.getInstance());// switch to password view
+					e1.setText("");
 				}
-			});
+			}
+		});
 
-			password.setOnClickListener(new OnClickListener() {
+		logBtn.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
-					EditText e1 = (EditText) v;
-					if (e1.getText().toString().equalsIgnoreCase("Password")) {
-						e1.setTransformationMethod(PasswordTransformationMethod
-								.getInstance());// switch to password view
-						e1.setText("");
-					}
+			@Override
+			public void onClick(View v) {
+				if (rememberMe.isChecked()) {
+					ScrapApp.SavePreference("login", email.getText().toString());
+					ScrapApp.SavePreference("password", password.getText()
+							.toString());
 				}
-			});
-
-			logBtn.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					AlbumFeed feed = GetUserMedia(email.getText().toString(),
-							password.getText().toString());
-					if (feed != null) {
-						PicasaImagesLoader loader = new PicasaImagesLoader(feed);
-						loader.execute();
-					}
-					CloseDialog();
-				}
-			});
-		}
+				PicasaImagesLoader loader = new PicasaImagesLoader(email
+						.getText().toString(), password.getText().toString());
+				loader.execute();
+				CloseDialog();
+			}
+		});
 		builder.setView(dialogView);
 		return builder.create();
-	}
-
-	// performs login and returns AlbumFeed
-	public AlbumFeed GetUserMedia(String _login, String _pass) {
-		String login = _login;
-		String password = _pass;
-		AlbumFeed feed = null;
-		PicasawebService picasa = new PicasawebService("el-solde-scrapbook");
-		try {
-			spinner.setVisibility(View.VISIBLE);
-			picasa.setUserCredentials(login, password);
-			if (rememberMe.isChecked()) {
-				ScrapApp.SavePreference("login", login);
-				ScrapApp.SavePreference("password", password);
-			}
-			URL feedUrl = new URL(
-					"https://picasaweb.google.com/data/feed/api/user/default?kind=photo&thumbsize=144&imgmax=1024");
-			feed = picasa.getFeed(feedUrl, AlbumFeed.class);
-			spinner.setVisibility(View.GONE);
-		} catch (AuthenticationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return feed;
 	}
 
 	public void CloseDialog() {
