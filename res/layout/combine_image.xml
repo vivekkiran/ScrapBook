@@ -5,5 +5,10 @@
     android:background="@drawable/bg_tab3"
     android:orientation="vertical" >
    
+    <android.opengl.GLSurfaceView 
+        android:id="@+id/graphics_glsurfaceview" 
+        android:layout_width="320dp" 
+        android:layout_height="350dp">
+    </android.opengl.GLSurfaceView>
     
 </LinearLayout>

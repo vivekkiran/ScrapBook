@@ -1,0 +1,2 @@
+include ':scrapbook:FacebookSDK'
+include ':Github:ScrapBook'
