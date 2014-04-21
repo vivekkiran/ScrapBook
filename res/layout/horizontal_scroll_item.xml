@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="106dp"
+    android:layout_height="64dp"
+    android:padding="3dp"
+    android:id="@+id/selectedPicItem"
+    android:background="@android:color/white" >
+    
+    <ImageView 
+    android:id="@+id/selectedImage" 
+    android:layout_width="100dp"   
+    android:scaleType="centerCrop"
+    android:layout_height="58dp"              
+    android:contentDescription="@+id/selectedImage"
+    />
+
+    <ImageView
+        android:id="@+id/pin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/selectedImage"
+        android:layout_alignRight="@+id/selectedImage"
+        android:contentDescription="@+id/Pin"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/pin" />
+
+</RelativeLayout>

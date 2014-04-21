@@ -8,8 +8,7 @@
     <GridView
         android:id="@+id/gallery_grid_view"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginBottom="80dp"
+        android:layout_height="380dp"        
         android:gravity="center"
         android:horizontalSpacing="8dp"
         android:numColumns="3"
@@ -22,6 +21,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="30dp"
+        android:visibility="gone" />
 
+    <HorizontalScrollView 
+        android:id="@+id/selected_pics_scroll"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/selected_board">
+        <LinearLayout
+            android:id="@+id/selected_pics_view"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />                               
+    </HorizontalScrollView>
+    
 </LinearLayout>
