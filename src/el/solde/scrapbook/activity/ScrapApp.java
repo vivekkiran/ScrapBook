@@ -1,6 +1,7 @@
 package el.solde.scrapbook.activity;
 
 import java.io.File;
+import java.io.IOException;
 
 import android.app.Application;
 import android.content.SharedPreferences;
@@ -26,6 +27,7 @@ public class ScrapApp extends Application {
 	private static ImageItem[] faceBookImages;
 	private static ImageItem[] picasaImages;
 	private static ImageItem[] InstagramImages;
+	private static ScrapProject CurrentScrapProject = new ScrapProject();
 
 	@Override
 	public void onCreate() {
@@ -54,6 +56,18 @@ public class ScrapApp extends Application {
 					editPref = pref.edit();
 					editPref.putBoolean("folders_created", true);
 					editPref.commit();
+				}
+				File last_scrap = new File(
+						Environment.getExternalStorageDirectory()
+								+ File.separator + "ScrapBook" + File.separator
+								+ "last.scp");
+				if (!last_scrap.exists()) {
+					try {
+						last_scrap.createNewFile();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		}
@@ -87,6 +101,10 @@ public class ScrapApp extends Application {
 
 		imageLoader = ImageLoader.getInstance();
 		imageLoader.init(config);
+	}
+
+	public static ScrapProject GetScrapProject() {
+		return CurrentScrapProject;
 	}
 
 	// cache urls to images while app is alive

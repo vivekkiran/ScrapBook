@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -17,7 +19,8 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
-public class ImageDisplayDialog extends DialogFragment {
+public class ImageDisplayDialog extends DialogFragment implements
+		OnClickListener {
 	DisplayImageOptions options;
 	String bigImage;
 
@@ -36,6 +39,9 @@ public class ImageDisplayDialog extends DialogFragment {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View dialogView = inflater.inflate(R.layout.image_display_dialog, null);
 		ImageView imageView = (ImageView) dialogView.findViewById(R.id.image);
+		ImageButton close_btn = (ImageButton) dialogView
+				.findViewById(R.id.remove_image_btn);
+		close_btn.setOnClickListener(this);
 		final ProgressBar spinner = (ProgressBar) dialogView
 				.findViewById(R.id.loading);
 
@@ -85,8 +91,25 @@ public class ImageDisplayDialog extends DialogFragment {
 						spinner.setVisibility(View.GONE);
 					}
 				});
+
 		builder.setView(dialogView);
 		return builder.create();
 	}
 
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.remove_image_btn: {
+			CloseDialog();
+		}
+		case R.id.add_image_btn: {
+
+		}
+		}
+
+	}
+
+	public void CloseDialog() {
+		this.dismiss();
+	}
 }

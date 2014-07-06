@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_tab2"
@@ -8,13 +8,14 @@
     <GridView
         android:id="@+id/gallery_grid_view"
         android:layout_width="fill_parent"
-        android:layout_height="380dp"        
+        android:layout_height="fill_parent"        
         android:gravity="center"
         android:horizontalSpacing="8dp"
         android:numColumns="3"
         android:padding="8dip"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="8dip" />
+        android:verticalSpacing="8dip"
+         />
 
     <com.facebook.widget.LoginButton
         android:id="@+id/authButton"
@@ -24,16 +25,20 @@
         android:layout_marginTop="30dp"
         android:visibility="gone" />
 
-    <HorizontalScrollView 
+    <HorizontalScrollView
         android:id="@+id/selected_pics_scroll"
         android:layout_width="fill_parent"
         android:layout_height="80dp"
-        android:background="@drawable/selected_board">
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/selected_board" >
+
         <LinearLayout
             android:id="@+id/selected_pics_view"
-            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />                               
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+        </LinearLayout>
     </HorizontalScrollView>
     
-</LinearLayout>
+</RelativeLayout>

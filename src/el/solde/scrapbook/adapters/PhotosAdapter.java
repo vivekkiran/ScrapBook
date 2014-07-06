@@ -72,7 +72,7 @@ public class PhotosAdapter extends BaseAdapter {
 		final ImageView imageView = (ImageView) convertView
 				.findViewById(R.id.image);
 		try {
-			imageLoader.displayImage(mList[position].thumbnail, imageView);
+			imageLoader.displayImage(mList[position].thumbnail(), imageView);
 		} catch (NullPointerException npe) {
 			Log.d("exception", "NullPointer: " + npe.getMessage());
 		}

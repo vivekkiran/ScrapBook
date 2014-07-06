@@ -65,7 +65,6 @@ public class Main extends FragmentActivity implements OnClickListener,
 		picture_select_tab.setOnClickListener(this);
 		combine_image_tab.setOnClickListener(this);
 		save_or_upload_tab.setOnClickListener(this);
-
 	}
 
 	@Override

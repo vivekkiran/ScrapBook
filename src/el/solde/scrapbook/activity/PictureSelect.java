@@ -272,7 +272,7 @@ public class PictureSelect extends Fragment {
 				if (clickedItem != null) {
 					ImageDisplayDialog imgDisplay = new ImageDisplayDialog();
 					Bundle params = new Bundle();
-					params.putString("imageUrl", clickedItem.source);
+					params.putString("imageUrl", clickedItem.source());
 					imgDisplay.setArguments(params);
 					imgDisplay.show(getFragmentManager(), null);
 				}
