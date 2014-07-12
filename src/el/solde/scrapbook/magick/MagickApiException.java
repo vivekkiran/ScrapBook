@@ -1,4 +1,4 @@
-package magick;
+package el.solde.scrapbook.magick;
 
 /**
  * Encapsulation of the ImageMagick ExceptionInfo structure as

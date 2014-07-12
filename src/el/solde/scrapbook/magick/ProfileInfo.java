@@ -1,4 +1,4 @@
-package magick;
+package el.solde.scrapbook.magick;
 
 /**
  * Class encapsulating some profile related to a image.
