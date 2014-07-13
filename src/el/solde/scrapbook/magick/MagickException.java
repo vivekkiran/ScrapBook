@@ -1,4 +1,4 @@
-package el.solde.scrapbook.magick;
+package magick;
 
 /**
  * Exception class for all encompassing Exception.

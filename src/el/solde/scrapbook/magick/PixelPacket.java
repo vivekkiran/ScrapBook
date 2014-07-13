@@ -1,4 +1,4 @@
-package el.solde.scrapbook.magick;
+package magick;
 
 
 
