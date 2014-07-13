@@ -1,4 +1,4 @@
-package magick;
+package el.solde.scrapbook.magick;
 
 /**
  * Corresponds to the ImageMagick enumerated type of the same name.

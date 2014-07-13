@@ -1,4 +1,4 @@
-package magick;
+package el.solde.scrapbook.magick;
 
 /**
  * Interface to contain definition for Image Magick's DecorationType.

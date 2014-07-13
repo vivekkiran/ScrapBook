@@ -1,4 +1,4 @@
-package magick;
+package el.solde.scrapbook.magick;
 
 public interface CompressionType {
 
