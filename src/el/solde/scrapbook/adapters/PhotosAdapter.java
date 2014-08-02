@@ -1,5 +1,7 @@
 package el.solde.scrapbook.adapters;
 
+import java.util.List;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +17,7 @@ import el.solde.scrapbook.activity.ScrapApp;
 
 public class PhotosAdapter extends BaseAdapter {
 
-	ImageItem[] mList;
+	List<ImageItem> mList;
 	LayoutInflater mInflater;
 	Context mContext;
 	ImageLoader imageLoader;
@@ -29,11 +31,11 @@ public class PhotosAdapter extends BaseAdapter {
 		mInflater = LayoutInflater.from(mContext);
 	}
 
-	public void SetImagesToShow(ImageItem[] images) {
+	public void SetImagesToShow(List<ImageItem> images) {
 		this.mList = images;
 	}
 
-	public PhotosAdapter(Context context, ImageItem[] _images) {
+	public PhotosAdapter(Context context, List<ImageItem> _images) {
 		mContext = context;
 		mInflater = LayoutInflater.from(mContext);
 		this.mList = _images;
@@ -43,7 +45,7 @@ public class PhotosAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		if (mList != null)
-			return mList.length;
+			return mList.size();
 		else
 			return 0;
 	}
@@ -53,7 +55,7 @@ public class PhotosAdapter extends BaseAdapter {
 	public ImageItem getItem(int position) {
 		int _position = position;
 		if (getCount() != 0) {
-			return mList[_position];
+			return mList.get(_position);
 		} else
 			return null;
 	}
@@ -72,7 +74,9 @@ public class PhotosAdapter extends BaseAdapter {
 		final ImageView imageView = (ImageView) convertView
 				.findViewById(R.id.image);
 		try {
-			imageLoader.displayImage(mList[position].thumbnail(), imageView);
+			imageLoader
+					.displayImage(mList.get(position).thumbnail(), imageView);
+
 		} catch (NullPointerException npe) {
 			Log.d("exception", "NullPointer: " + npe.getMessage());
 		}

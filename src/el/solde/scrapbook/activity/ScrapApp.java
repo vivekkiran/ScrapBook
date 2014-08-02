@@ -2,6 +2,8 @@ package el.solde.scrapbook.activity;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Application;
 import android.content.SharedPreferences;
@@ -23,10 +25,11 @@ public class ScrapApp extends Application {
 	private static ImageLoader imageLoader;
 	private static SharedPreferences pref;
 	private static Editor editPref;
-	private static ImageItem[] galleryImages;
-	private static ImageItem[] faceBookImages;
-	private static ImageItem[] picasaImages;
-	private static ImageItem[] InstagramImages;
+	private static ScrapApp instance = null;
+	private List<ImageItem> galleryImages = null;
+	private List<ImageItem> faceBookImages = null;
+	private List<ImageItem> picasaImages = null;
+	private List<ImageItem> instagramImages = null;
 	private static ScrapProject CurrentScrapProject = new ScrapProject();
 
 	@Override
@@ -74,6 +77,7 @@ public class ScrapApp extends Application {
 		{
 			init();
 		}
+		instance = this;
 	}
 
 	public static ImageLoader getImageLoader() {
@@ -103,17 +107,26 @@ public class ScrapApp extends Application {
 		imageLoader.init(config);
 	}
 
-	public static ScrapProject GetScrapProject() {
+	public ScrapProject GetScrapProject() {
 		return CurrentScrapProject;
 	}
 
 	// cache urls to images while app is alive
-	public static void CacheGalleryImages(ImageItem[] _images) {
+	public void CacheGalleryImages(List<ImageItem> _images) {
 		galleryImages = _images;
 	}
 
+	public void CacheGalleryImage(ImageItem _image) {
+		if (galleryImages != null)
+			galleryImages.add(_image);
+		else {
+			galleryImages = new ArrayList<ImageItem>();
+			galleryImages.add(_image);
+		}
+	}
+
 	// get cachedImages or null
-	public static ImageItem[] GetGalleryImages() {
+	public List<ImageItem> GetGalleryImages() {
 		if (galleryImages != null)
 			return galleryImages;
 		else
@@ -121,12 +134,21 @@ public class ScrapApp extends Application {
 	}
 
 	// cache urls to images while app is alive
-	public static void CacheFaceBookImages(ImageItem[] _images) {
+	public void CacheFaceBookImages(List<ImageItem> _images) {
 		faceBookImages = _images;
 	}
 
+	public void CacheFaceBookImage(ImageItem _image) {
+		if (faceBookImages != null)
+			faceBookImages.add(_image);
+		else {
+			faceBookImages = new ArrayList<ImageItem>();
+			faceBookImages.add(_image);
+		}
+	}
+
 	// get cachedImages or null
-	public static ImageItem[] GetFaceBookImages() {
+	public List<ImageItem> GetFaceBookImages() {
 		if (faceBookImages != null)
 			return faceBookImages;
 		else
@@ -134,12 +156,21 @@ public class ScrapApp extends Application {
 	}
 
 	// cache urls to images while app is alive
-	public static void CachePicasaImages(ImageItem[] _images) {
+	public void CachePicasaImages(List<ImageItem> _images) {
 		picasaImages = _images;
 	}
 
+	public void CachePicasaImage(ImageItem _image) {
+		if (picasaImages != null)
+			picasaImages.add(_image);
+		else {
+			picasaImages = new ArrayList<ImageItem>();
+			picasaImages.add(_image);
+		}
+	}
+
 	// get cachedImages or null
-	public static ImageItem[] GetPicasaImages() {
+	public List<ImageItem> GetPicasaImages() {
 		if (picasaImages != null)
 			return picasaImages;
 		else
@@ -147,14 +178,24 @@ public class ScrapApp extends Application {
 	}
 
 	// cache urls to images while app is alive
-	public static void CacheInstagramImages(ImageItem[] _images) {
-		InstagramImages = _images;
+	public void CacheInstagramImages(List<ImageItem> _images) {
+		instagramImages = _images;
+	}
+
+	public void CacheInstagramImage(ImageItem _image) {
+		if (instagramImages != null)
+			instagramImages.add(_image);
+		else {
+			instagramImages = new ArrayList<ImageItem>();
+			instagramImages.add(_image);
+		}
+
 	}
 
 	// get cachedImages or null
-	public static ImageItem[] GetInstagramImages() {
-		if (InstagramImages != null)
-			return InstagramImages;
+	public List<ImageItem> GetInstagramImages() {
+		if (instagramImages != null)
+			return instagramImages;
 		else
 			return null;
 	}
@@ -175,6 +216,10 @@ public class ScrapApp extends Application {
 
 	public static SharedPreferences GetPreference() {
 		return pref;
+	}
+
+	public static ScrapApp GetInstance() {
+		return instance;
 	}
 
 }

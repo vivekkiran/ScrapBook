@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical|center_horizontal"
+    android:background="@drawable/bg_tab1"
+    android:id="@+id/service_select_container">
+    
+<LinearLayout     
+    android:id="@+id/all_container" 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"    
+    android:orientation="vertical"
+    android:gravity="center_vertical|center_horizontal" >
+
+    <ImageView
+        android:layout_width="720dp"
+        android:layout_height="250dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:contentDescription="@+id/Logo"
+        android:src="@drawable/logo" />
+
+    <LinearLayout
+        android:layout_width="720dp"
+        android:layout_height="720dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="60dp"
+        android:id="@+id/service_buttons_container" 
+        android:layout_marginRight="10dp"                
+        android:gravity="center_vertical|center_horizontal"
+        android:background="@drawable/board"
+        android:orientation="vertical" >
+
+        <ImageButton
+            android:id="@+id/btn_camera"            
+            android:layout_width="500dp"
+            android:layout_height="100dp"
+            android:background="@drawable/btn_camera"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:contentDescription="@+id/Btn_camera" />
+
+        <ImageButton
+            android:id="@+id/btn_gallery"
+            android:layout_marginTop="7dp"
+            android:layout_width="500dp"
+            android:layout_height="100dp"
+            android:background="@drawable/btn_gallery"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:contentDescription="@+id/Btn_gallery" />
+
+        <ImageButton
+            android:id="@+id/btn_facebook"
+            android:layout_marginTop="7dp"
+            android:layout_width="500dp"
+            android:layout_height="100dp"
+            android:background="@drawable/btn_facebook"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:contentDescription="@+id/Btn_facebook" />
+
+        <ImageButton
+            android:id="@+id/btn_picasa"
+            android:layout_marginTop="7dp"
+           android:layout_width="500dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:background="@drawable/btn_picasa"
+            android:contentDescription="@+id/Btn_picasa" />
+
+        <ImageButton
+            android:id="@+id/btn_instagram"
+            android:layout_marginTop="7dp"
+            android:layout_width="500dp"
+            android:layout_height="100dp"
+            android:background="@drawable/btn_instagram"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:contentDescription="@+id/Btn_flickr" />
+    </LinearLayout>    
+
+</LinearLayout>
+<ImageButton
+        android:id="@+id/last_scrap_btn"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:layout_alignRight="@+id/all_container"
+        android:layout_alignBottom="@+id/all_container"
+        android:background="@drawable/last_scrap"
+        android:contentDescription="@+id/Last_scrap_btn" />
+</RelativeLayout>

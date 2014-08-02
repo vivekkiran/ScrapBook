@@ -35,18 +35,15 @@ public class InstagramImagesLoader extends GeneralImageLoader {
 	}
 
 	// for array which is associated with Gridview
-	ImageItem[] images;
 
 	@Override
-	protected ImageItem[] doInBackground(Void... voids) {
+	protected Void doInBackground(Void... voids) {
 		// TODO Auto-generated method stub
-		if (ScrapApp.GetInstagramImages() != null) {
-			images = ScrapApp.GetInstagramImages();
-		} else {
+		if (ScrapApp.GetInstance().GetInstagramImages() == null) {
 			if (insta_token != "" && insta_token != null) {
 				if (insta_id != "" && insta_id != null) {
 					// we have all data - get user pictures
-					images = GetUserMedia(insta_token,
+					GetUserMedia(insta_token,
 							"https://api.instagram.com/v1/users/" + insta_id
 									+ "/media/recent?access_token="
 									+ insta_token + "&count=-1");
@@ -62,28 +59,27 @@ public class InstagramImagesLoader extends GeneralImageLoader {
 				}
 			}
 		}
-		return images;
+		return null;
 	}
 
 	@Override
-	protected void onProgressUpdate(ImageItem[]... values) {
+	protected void onProgressUpdate(ImageItem... values) {
 		super.onProgressUpdate(values);
-		ScrapApp.CacheInstagramImages(values[0]);
+		ScrapApp.GetInstance().CacheInstagramImage(values[0]);
 		parFragment.OnImagesLoadComplete(PictureSelect.instagram);
 	}
 
 	@Override
-	protected void onPostExecute(ImageItem[] result) {
+	protected void onPostExecute(Void result) {
 		// TODO Auto-generated method stub
-		super.onPreExecute();
-		ScrapApp.CacheInstagramImages(result);
-
+		super.onPostExecute(result);
+		// let UI know that everything uploaded
 		parFragment.OnImagesLoadComplete(PictureSelect.instagram);
 
 	}
 
 	// this method gets user Media. uses access token and user id as paramters
-	protected ImageItem[] GetUserMedia(String _insta_token, String url) {
+	protected Void GetUserMedia(String _insta_token, String url) {
 		// Creating HTTP client
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 
@@ -99,15 +95,14 @@ public class InstagramImagesLoader extends GeneralImageLoader {
 			JSONArray imageObjs = retrieved.getJSONArray("data");
 			// get every data JSON object, get images object, get thumbnail and
 			// standart resolution of image
-			images = new ImageItem[imageObjs.length()];
 			for (int r = 0; r < imageObjs.length(); r++) {
 				// get "images" Object
-				images[r] = new ImageItem(imageObjs.getJSONObject(r)
+				ImageItem current = new ImageItem(imageObjs.getJSONObject(r)
 						.getJSONObject("images").getJSONObject("thumbnail")
 						.getString("url"), imageObjs.getJSONObject(r)
 						.getJSONObject("images")
 						.getJSONObject("standard_resolution").getString("url"));
-				publishProgress(images);
+				publishProgress(current);
 
 			}
 
@@ -122,7 +117,7 @@ public class InstagramImagesLoader extends GeneralImageLoader {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return images;
+		return null;
 	}
 
 	// this method gets user ID for using in future requests

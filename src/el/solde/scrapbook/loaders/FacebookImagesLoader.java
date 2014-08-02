@@ -30,16 +30,10 @@ public class FacebookImagesLoader extends GeneralImageLoader {
 
 	// sorting parameter
 	final String orderBy = MediaStore.Images.Thumbnails.IMAGE_ID;
-	// for array which is associated with Gridview
-	ImageItem[] images;
 
 	@Override
-	protected ImageItem[] doInBackground(Void... voids) {
-		if (ScrapApp.GetFaceBookImages() != null) {
-			// calling ImagesLoadComplete we check if current service is
-			// facebook and if we have to update UI
-			images = ScrapApp.GetFaceBookImages();
-		} else {
+	protected Void doInBackground(Void... voids) {
+		if (ScrapApp.GetInstance().GetFaceBookImages() == null) {
 			String fqlQuery = "SELECT src, src_big FROM photo WHERE aid IN (SELECT aid FROM album WHERE owner=me())";
 			Bundle params = new Bundle();
 			params.putString("q", fqlQuery);
@@ -55,15 +49,15 @@ public class FacebookImagesLoader extends GeneralImageLoader {
 								try {
 									JSONArray photosArr = photos
 											.getJSONArray("data");
-									images = new ImageItem[photosArr.length()];
 									for (int i = 0; i < photosArr.length(); i++) {
-										images[i] = new ImageItem(photosArr
-												.getJSONObject(i)
-												.getString("src").toString(),
+										ImageItem current = new ImageItem(
 												photosArr.getJSONObject(i)
+														.getString("src")
+														.toString(), photosArr
+														.getJSONObject(i)
 														.getString("src_big")
 														.toString());
-										publishProgress(images);
+										publishProgress(current);
 									}
 								} catch (JSONException ex) {
 
@@ -72,23 +66,21 @@ public class FacebookImagesLoader extends GeneralImageLoader {
 						}
 					}).executeAndWait();
 		}
-		return images;
+		return null;
 	}
 
 	@Override
-	protected void onProgressUpdate(ImageItem[]... values) {
+	protected void onProgressUpdate(ImageItem... values) {
 		// TODO Auto-generated method stub
 		super.onProgressUpdate(values);
-		ScrapApp.CacheFaceBookImages(values[0]);
+		ScrapApp.GetInstance().CacheFaceBookImage(values[0]);
 		// let the UI know about loading finished
 		parFragment.OnImagesLoadComplete(PictureSelect.facebook);
 	}
 
 	@Override
-	protected void onPostExecute(ImageItem[] result) {
+	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
-		// cacheImages
-		ScrapApp.CacheFaceBookImages(result);
 		// let the UI know about loading finished
 		parFragment.OnImagesLoadComplete(PictureSelect.facebook);
 	}

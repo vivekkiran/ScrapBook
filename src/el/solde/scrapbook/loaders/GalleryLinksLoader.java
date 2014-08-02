@@ -1,6 +1,10 @@
 package el.solde.scrapbook.loaders;
 
+import java.io.File;
+
+import android.content.ContentResolver;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.MediaStore;
 import el.solde.scrapbook.activity.PictureSelect;
 import el.solde.scrapbook.activity.ScrapApp;
@@ -21,18 +25,13 @@ public class GalleryLinksLoader extends GeneralImageLoader {
 	// instance of parent fragment
 	PictureSelect parFragment;
 
-	// for array which is associated with Gridview
-	ImageItem[] images;
-
 	public GalleryLinksLoader() {
 		parFragment = PictureSelect.getInstance();
 	}
 
 	@Override
-	protected ImageItem[] doInBackground(Void... params) {
-		if (ScrapApp.GetGalleryImages() != null) {
-			images = ScrapApp.GetGalleryImages();
-		} else {
+	protected Void doInBackground(Void... params) {
+		if (ScrapApp.GetInstance().GetGalleryImages() == null) {
 			Cursor imageCursor = parFragment
 					.getActivity()
 					.getContentResolver()
@@ -41,7 +40,6 @@ public class GalleryLinksLoader extends GeneralImageLoader {
 							null, // Return all rows
 							null, orderBy);
 
-			images = new ImageItem[imageCursor.getCount()];
 			if (imageCursor != null) {
 				for (int i = 0; i < imageCursor.getCount(); i++) {
 					imageCursor.moveToPosition(i);
@@ -49,37 +47,53 @@ public class GalleryLinksLoader extends GeneralImageLoader {
 							.getColumnIndex(MediaStore.Images.Thumbnails.DATA);
 					int dataColumnIndex2 = imageCursor
 							.getColumnIndex(MediaStore.Images.Thumbnails.IMAGE_ID);
-					images[i] = new ImageItem(
-							("file://" + imageCursor.getString(dataColumnIndex)),
-							MediaStore.Images.Media.getContentUri("external")
-									.toString()
-									+ "/"
-									+ imageCursor.getString(dataColumnIndex2));
-					publishProgress(images);
+					String source = MediaStore.Images.Media.getContentUri(
+							"external").toString()
+							+ "/" + imageCursor.getString(dataColumnIndex2);
+					if (IsFileAvailable(source)) {
+						ImageItem current = new ImageItem(
+								("file://" + imageCursor
+										.getString(dataColumnIndex)),
+								source);
+						publishProgress(current);
+					}
+
 				}
 			}
 
 			imageCursor.close();
 		}
-		return images;
+		return null;
 	}
 
 	@Override
-	protected void onProgressUpdate(ImageItem[]... values) {
+	protected void onProgressUpdate(ImageItem... values) {
 		// TODO Auto-generated method stub
-		super.onProgressUpdate(values);
-		ScrapApp.CacheGalleryImages(values[0]);
+		ScrapApp.GetInstance().CacheGalleryImage(values[0]);
 		// let the UI know about loading finished
 		parFragment.OnImagesLoadComplete(PictureSelect.gallery);
 	}
 
 	@Override
-	protected void onPostExecute(ImageItem[] result) {
+	protected void onPostExecute(Void result) {
 		// TODO Auto-generated method stub
 		super.onPostExecute(result);
-		// cacheImages
-		ScrapApp.CacheGalleryImages(result);
 		// let the UI know about loading finished
 		parFragment.OnImagesLoadComplete(PictureSelect.gallery);
 	}
+
+	private boolean IsFileAvailable(String path) {
+		boolean exists = false;
+		ContentResolver cr = GetParentFrament().getActivity()
+				.getContentResolver();
+		String[] projection = { MediaStore.MediaColumns.DATA };
+		Cursor cur = cr.query(Uri.parse(path), projection, null, null, null);
+		if (cur.moveToFirst()) {
+			String filePath = cur.getString(0);
+			File ff = new File(filePath);
+			exists = ff.exists();
+		}
+		return exists;
+	}
+
 }

@@ -20,8 +20,6 @@ import el.solde.scrapbook.picasa.PicasaLoginDialog;
 public class PicasaImagesLoader extends GeneralImageLoader {
 
 	private AlbumFeed feed;
-	// for array which is associated with Gridview
-	ImageItem[] images;
 	// instance of parent fragment
 	PictureSelect parFragment;
 	// instance of loader
@@ -46,11 +44,9 @@ public class PicasaImagesLoader extends GeneralImageLoader {
 	}
 
 	@Override
-	protected ImageItem[] doInBackground(Void... params) {
+	protected Void doInBackground(Void... params) {
 		// if images are cacher - show them from cache
-		if (ScrapApp.GetPicasaImages() != null) {
-			images = ScrapApp.GetPicasaImages();
-		} else {
+		if (ScrapApp.GetInstance().GetPicasaImages() == null) {
 			// if credentials were saved - proceed with them
 			if (login != null && login != "" && password != null
 					& password != "") {
@@ -59,13 +55,12 @@ public class PicasaImagesLoader extends GeneralImageLoader {
 				if (feed != null) {
 					List<GphotoEntry> Gphoto = (List<GphotoEntry>) feed
 							.getEntries();
-					images = new ImageItem[Gphoto.size()];
 					for (int i = 0; i < Gphoto.size(); i++) {
 						PhotoEntry photo = new PhotoEntry(Gphoto.get(i));
-						images[i] = new ImageItem(photo.getMediaThumbnails()
-								.get(0).getUrl(), photo.getMediaContents()
-								.get(0).getUrl());
-						publishProgress(images);
+						ImageItem current = new ImageItem(photo
+								.getMediaThumbnails().get(0).getUrl(), photo
+								.getMediaContents().get(0).getUrl());
+						publishProgress(current);
 					}
 				}
 			}
@@ -75,23 +70,21 @@ public class PicasaImagesLoader extends GeneralImageLoader {
 				login.show(parFragment.getFragmentManager(), "Picasa Login");
 			}
 		}
-		return images;
+		return null;
 	}
 
 	@Override
-	protected void onProgressUpdate(ImageItem[]... values) {
+	protected void onProgressUpdate(ImageItem... values) {
 		// TODO Auto-generated method stub
 		super.onProgressUpdate(values);
-		ScrapApp.CachePicasaImages(values[0]);
+		ScrapApp.GetInstance().CachePicasaImage(values[0]);
 		// let the UI know about loading finished
 		parFragment.OnImagesLoadComplete(PictureSelect.picasa);
 	}
 
 	@Override
-	protected void onPostExecute(ImageItem[] result) {
+	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
-		// cacheImages
-		ScrapApp.CachePicasaImages(result);
 		// let the UI know about loading finished
 		parFragment.OnImagesLoadComplete(PictureSelect.picasa);
 	}

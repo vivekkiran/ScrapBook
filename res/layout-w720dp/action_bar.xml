@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tabs_layout"
+    style="?android:attr/buttonBarButtonStyle"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:background="@drawable/tab1_bar"
+    android:orientation="horizontal" >
+
+    <Button
+        android:id="@+id/btn_select_service"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:contentDescription="@+id/Btn_select_service"
+        android:orientation="horizontal" 
+        android:textColor="@android:color/white">
+    </Button>
+
+    <Button
+        android:id="@+id/btn_picture_select"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:contentDescription="@+id/Btn_picture_select"
+        android:textColor="@android:color/white">
+    </Button>
+
+    <Button
+        android:id="@+id/btn_combine_image"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:contentDescription="@+id/Btn_picture_select"
+        android:textColor="@android:color/white">
+    </Button>
+
+    <Button
+        android:id="@+id/btn_save_or_upload"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:contentDescription="@+id/Btn_picture_select"
+        android:textColor="@android:color/white">
+    </Button>
+
+</LinearLayout>

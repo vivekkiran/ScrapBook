@@ -283,25 +283,29 @@ public class PictureSelect extends Fragment {
 		}
 		switch (service) {
 		case gallery: {
-			photosAdapter.SetImagesToShow(ScrapApp.GetGalleryImages());
+			photosAdapter.SetImagesToShow(ScrapApp.GetInstance()
+					.GetGalleryImages());
 			photosAdapter.notifyDataSetChanged();
 			gridImg.setAdapter(photosAdapter);
 			break;
 		}
 		case facebook: {
-			photosAdapter.SetImagesToShow(ScrapApp.GetFaceBookImages());
+			photosAdapter.SetImagesToShow(ScrapApp.GetInstance()
+					.GetFaceBookImages());
 			photosAdapter.notifyDataSetChanged();
 			gridImg.setAdapter(photosAdapter);
 			break;
 		}
 		case picasa: {
-			photosAdapter.SetImagesToShow(ScrapApp.GetPicasaImages());
+			photosAdapter.SetImagesToShow(ScrapApp.GetInstance()
+					.GetPicasaImages());
 			photosAdapter.notifyDataSetChanged();
 			gridImg.setAdapter(photosAdapter);
 			break;
 		}
 		case instagram: {
-			photosAdapter.SetImagesToShow(ScrapApp.GetInstagramImages());
+			photosAdapter.SetImagesToShow(ScrapApp.GetInstance()
+					.GetInstagramImages());
 			photosAdapter.notifyDataSetChanged();
 			gridImg.setAdapter(photosAdapter);
 			break;
