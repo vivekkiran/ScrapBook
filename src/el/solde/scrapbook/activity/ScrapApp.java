@@ -31,6 +31,7 @@ public class ScrapApp extends Application {
 	private List<ImageItem> picasaImages = null;
 	private List<ImageItem> instagramImages = null;
 	private static ScrapProject CurrentScrapProject = new ScrapProject();
+	private static String cacheFolder = null;
 
 	@Override
 	public void onCreate() {
@@ -47,14 +48,9 @@ public class ScrapApp extends Application {
 					Environment.MEDIA_MOUNTED)) {
 				File directory = new File(
 						Environment.getExternalStorageDirectory()
-								+ File.separator + "ScrapBook");
+								+ File.separator + "ScrapBook" + File.separator
+								+ "Cache");
 				if (!directory.exists()) {
-					directory.mkdirs();
-					// cache dir
-					directory = new File(
-							Environment.getExternalStorageDirectory()
-									+ File.separator + "ScrapBook"
-									+ File.separator + "Cache");
 					directory.mkdirs();
 					editPref = pref.edit();
 					editPref.putBoolean("folders_created", true);
@@ -85,10 +81,12 @@ public class ScrapApp extends Application {
 	}
 
 	public void init() {
-		File cacheDir = StorageUtils.getOwnCacheDirectory(
+		cacheFolder = StorageUtils.getOwnCacheDirectory(
 				getApplicationContext(),
 				Environment.getExternalStorageDirectory() + File.separator
-						+ "ScrapBook" + File.separator + "Cache");
+						+ "ScrapBook" + File.separator + "Cache")
+				.getAbsolutePath();
+		File cacheDir = new File(cacheFolder);
 		// Create global configuration and initialize ImageLoader with this
 		// configuration
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
@@ -220,6 +218,10 @@ public class ScrapApp extends Application {
 
 	public static ScrapApp GetInstance() {
 		return instance;
+	}
+
+	public static String GetCacheFolder() {
+		return cacheFolder;
 	}
 
 }

@@ -1,11 +1,18 @@
 package el.solde.scrapbook.loaders;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 import el.solde.scrapbook.activity.PictureSelect;
 import el.solde.scrapbook.activity.ScrapApp;
 import el.solde.scrapbook.adapters.ImageItem;
@@ -16,11 +23,11 @@ import el.solde.scrapbook.adapters.ImageItem;
 public class GalleryLinksLoader extends GeneralImageLoader {
 
 	// type of loader
-	final String[] columns = { MediaStore.Images.Thumbnails.DATA,
-			MediaStore.Images.Thumbnails.IMAGE_ID };
+	final String[] columns = { MediaStore.Images.Media.DATA,
+			MediaStore.Images.Media._ID };
 
 	// sorting parameter
-	final String orderBy = MediaStore.Images.Thumbnails.IMAGE_ID;
+	final String orderBy = MediaStore.Images.Media.DATE_MODIFIED;
 
 	// instance of parent fragment
 	PictureSelect parFragment;
@@ -32,31 +39,73 @@ public class GalleryLinksLoader extends GeneralImageLoader {
 	@Override
 	protected Void doInBackground(Void... params) {
 		if (ScrapApp.GetInstance().GetGalleryImages() == null) {
-			Cursor imageCursor = parFragment
-					.getActivity()
-					.getContentResolver()
-					.query(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
-							columns, // Which columns to return
-							null, // Return all rows
-							null, orderBy);
+			ContentResolver contentResolver = parFragment.getActivity()
+					.getContentResolver();
+			Cursor imageCursor = contentResolver.query(
+					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, // Which
+																			// columns
+																			// to
+																			// return
+					null, // Return all rows
+					null, orderBy);
 
 			if (imageCursor != null) {
 				for (int i = 0; i < imageCursor.getCount(); i++) {
 					imageCursor.moveToPosition(i);
 					int dataColumnIndex = imageCursor
-							.getColumnIndex(MediaStore.Images.Thumbnails.DATA);
+							.getColumnIndex(MediaStore.Images.Media.DATA);
 					int dataColumnIndex2 = imageCursor
-							.getColumnIndex(MediaStore.Images.Thumbnails.IMAGE_ID);
-					String source = MediaStore.Images.Media.getContentUri(
+							.getColumnIndex(MediaStore.Images.Media._ID);
+					String cacheFolder = ScrapApp.GetCacheFolder();
+
+					String thumb_id = imageCursor.getString(dataColumnIndex2);
+
+					String thumb = MediaStore.Images.Thumbnails.getContentUri(
 							"external").toString()
-							+ "/" + imageCursor.getString(dataColumnIndex2);
-					if (IsFileAvailable(source)) {
-						ImageItem current = new ImageItem(
-								("file://" + imageCursor
-										.getString(dataColumnIndex)),
-								source);
-						publishProgress(current);
+							+ File.separator + thumb_id;
+
+					String source = "file://"
+							+ imageCursor.getString(dataColumnIndex);
+
+					/*
+					 * if file is not available as andoid thumbnail we generate
+					 * our own thumbnail, save it to cache folder and return
+					 * path to our cache
+					 */
+					if (!IsFileAvailable(thumb)) {
+						if (!new File(cacheFolder + File.separator + thumb_id)
+								.exists()) {
+							File bigImage = new File(
+									imageCursor.getString(dataColumnIndex));
+							if (bigImage.exists()) {
+								Bitmap thumbnailToSave = DecodeBitmap(bigImage);
+								File pictureFile = new File(cacheFolder
+										+ File.separator + thumb_id);
+								try {
+									FileOutputStream fos = new FileOutputStream(
+											pictureFile);
+									thumbnailToSave
+											.compress(
+													Bitmap.CompressFormat.JPEG,
+													90, fos);
+									fos.close();
+									thumb = "file://" + cacheFolder
+											+ File.separator + thumb_id;
+								} catch (FileNotFoundException e) {
+									Log.d("ScrapBook",
+											"File not found: " + e.getMessage());
+								} catch (IOException e) {
+									Log.d("ScrapBook", "Error accessing file: "
+											+ e.getMessage());
+								}
+							}
+						} else {
+							thumb = "file://" + cacheFolder + File.separator
+									+ thumb_id;
+						}
 					}
+					ImageItem current = new ImageItem(thumb, source);
+					publishProgress(current);
 
 				}
 			}
@@ -88,12 +137,43 @@ public class GalleryLinksLoader extends GeneralImageLoader {
 				.getContentResolver();
 		String[] projection = { MediaStore.MediaColumns.DATA };
 		Cursor cur = cr.query(Uri.parse(path), projection, null, null, null);
-		if (cur.moveToFirst()) {
+		if (cur != null && cur.moveToFirst()) {
 			String filePath = cur.getString(0);
 			File ff = new File(filePath);
 			exists = ff.exists();
 		}
 		return exists;
+	}
+
+	// decodes image and scales it to reduce memory consumption
+	private Bitmap DecodeBitmap(File f) {
+		try {
+			// decode image size
+			BitmapFactory.Options o = new BitmapFactory.Options();
+			o.inJustDecodeBounds = true;
+			BitmapFactory.decodeStream(new FileInputStream(f), null, o);
+
+			// Find the correct scale value. It should be the power of 2.
+			final int REQUIRED_SIZE = 250;
+			int width_tmp = o.outWidth, height_tmp = o.outHeight;
+			int scale = 1;
+			while (true) {
+				if (width_tmp / 2 < REQUIRED_SIZE
+						|| height_tmp / 2 < REQUIRED_SIZE)
+					break;
+				width_tmp /= 2;
+				height_tmp /= 2;
+				scale++;
+			}
+
+			// decode with inSampleSize
+			BitmapFactory.Options o2 = new BitmapFactory.Options();
+			o2.inSampleSize = scale;
+			return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }
