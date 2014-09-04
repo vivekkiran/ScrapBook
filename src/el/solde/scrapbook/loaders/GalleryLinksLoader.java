@@ -19,7 +19,8 @@ import el.solde.scrapbook.adapters.ImageItem;
 
 //Here we create ImageItem for each image from gallery, load there thumbnail url and real url
 //return ImageItem[] array with items 
-
+//this is some kind of singletone, but every time we've finished checking images in gallery,
+//we set instance to NULL to be able to execute once more
 public class GalleryLinksLoader extends GeneralImageLoader {
 
 	// type of loader
@@ -32,25 +33,41 @@ public class GalleryLinksLoader extends GeneralImageLoader {
 	// instance of parent fragment
 	PictureSelect parFragment;
 
-	public GalleryLinksLoader() {
+	private static GalleryLinksLoader instance;
+
+	private GalleryLinksLoader() {
 		parFragment = PictureSelect.getInstance();
+	}
+
+	public static GalleryLinksLoader GetInstance() {
+		if (instance == null) {
+			synchronized (GalleryLinksLoader.class) {
+				if (instance == null) {
+					instance = new GalleryLinksLoader();
+				}
+			}
+		}
+		return instance;
 	}
 
 	@Override
 	protected Void doInBackground(Void... params) {
-		if (ScrapApp.GetInstance().GetGalleryImages() == null) {
-			ContentResolver contentResolver = parFragment.getActivity()
-					.getContentResolver();
-			Cursor imageCursor = contentResolver.query(
-					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, // Which
-																			// columns
-																			// to
-																			// return
-					null, // Return all rows
-					null, orderBy);
-
-			if (imageCursor != null) {
-				for (int i = 0; i < imageCursor.getCount(); i++) {
+		ContentResolver contentResolver = parFragment.getActivity()
+				.getContentResolver();
+		Cursor imageCursor = contentResolver.query(
+				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, // Which
+																		// columns
+																		// to
+																		// return
+				null, // Return all rows
+				null, orderBy);
+		int cursorCount;// initial size of list of images
+		if (imageCursor != null) {
+			cursorCount = imageCursor.getCount();
+			if (ScrapApp.GetInstance().GetGalleryImages() == null
+					|| ScrapApp.GetInstance().GetGalleryImages().size() != cursorCount) {
+				ScrapApp.GetInstance().CacheGalleryImages(cursorCount);
+				for (int i = 0; i < cursorCount; i++) {
 					imageCursor.moveToPosition(i);
 					int dataColumnIndex = imageCursor
 							.getColumnIndex(MediaStore.Images.Media.DATA);
@@ -129,6 +146,7 @@ public class GalleryLinksLoader extends GeneralImageLoader {
 		super.onPostExecute(result);
 		// let the UI know about loading finished
 		parFragment.OnImagesLoadComplete(PictureSelect.gallery);
+		instance = null;
 	}
 
 	private boolean IsFileAvailable(String path) {

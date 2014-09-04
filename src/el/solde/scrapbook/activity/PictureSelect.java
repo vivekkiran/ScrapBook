@@ -2,6 +2,7 @@ package el.solde.scrapbook.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -104,6 +105,10 @@ public class PictureSelect extends Fragment {
 		// session is not null, the session state change notification
 		// may not be triggered. Trigger it if it's open/closed.
 		Session session = Session.getActiveSession();
+		if (currentService == gallery) {
+			if (GalleryLinksLoader.GetInstance().getStatus() != AsyncTask.Status.RUNNING)
+				GalleryLinksLoader.GetInstance().execute();
+		}
 		if (session != null && (session.isOpened() || session.isClosed())) {
 			onSessionStateChange(session, session.getState(), null);
 		}
@@ -142,7 +147,8 @@ public class PictureSelect extends Fragment {
 				.inflate(R.layout.pictures_select, container, false);
 		switch (currentService) {
 		case gallery: {
-			new GalleryLinksLoader().execute();
+			if (GalleryLinksLoader.GetInstance().getStatus() != AsyncTask.Status.RUNNING)
+				GalleryLinksLoader.GetInstance().execute();
 			break;
 		}
 		case facebook: {
@@ -183,7 +189,8 @@ public class PictureSelect extends Fragment {
 				if (authButton.isShown()) {
 					authButton.setVisibility(View.GONE);
 				}
-				new GalleryLinksLoader().execute();
+				if (GalleryLinksLoader.GetInstance().getStatus() != AsyncTask.Status.RUNNING)
+					GalleryLinksLoader.GetInstance().execute();
 				break;
 			}
 			case facebook: {

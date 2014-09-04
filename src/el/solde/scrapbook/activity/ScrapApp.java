@@ -114,6 +114,11 @@ public class ScrapApp extends Application {
 		galleryImages = _images;
 	}
 
+	// cache urls to images while app is alive
+	public void CacheGalleryImages(int size) {
+		galleryImages = new ArrayList<ImageItem>(size);
+	}
+
 	public void CacheGalleryImage(ImageItem _image) {
 		if (galleryImages != null)
 			galleryImages.add(_image);
