@@ -55,11 +55,7 @@ public class GalleryLinksLoader extends GeneralImageLoader {
 		ContentResolver contentResolver = parFragment.getActivity()
 				.getContentResolver();
 		Cursor imageCursor = contentResolver.query(
-				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, // Which
-																		// columns
-																		// to
-																		// return
-				null, // Return all rows
+				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
 				null, orderBy);
 		int cursorCount;// initial size of list of images
 		if (imageCursor != null) {

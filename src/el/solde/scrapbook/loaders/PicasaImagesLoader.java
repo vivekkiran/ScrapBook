@@ -18,29 +18,36 @@ import el.solde.scrapbook.adapters.ImageItem;
 import el.solde.scrapbook.picasa.PicasaLoginDialog;
 
 public class PicasaImagesLoader extends GeneralImageLoader {
-
+	// Here we create ImageItem for each image from INSTAGRAM, load there
+	// thumbnail url and real url
+	// return ImageItem[] array with items
+	// this is some kind of singletone, but every time we've finished checking
+	// images in gallery,
+	// we set instance to NULL to be able to execute once more
 	private AlbumFeed feed;
 	// instance of parent fragment
 	PictureSelect parFragment;
 	// instance of loader
-	private static PicasaImagesLoader _instance;
+	private static PicasaImagesLoader instance;
 
 	private String login, password;
 
-	public PicasaImagesLoader() {
+	private PicasaImagesLoader() {
 		// TODO Auto-generated constructor stub
 		parFragment = GetParentFrament();
-		_instance = this;
 		login = ScrapApp.GetPreference().getString("login", "");
 		password = ScrapApp.GetPreference().getString("password", "");
 	}
 
-	public PicasaImagesLoader(String _login, String _password) {
-		// TODO Auto-generated constructor stub
-		parFragment = GetParentFrament();
-		_instance = this;
-		login = _login;
-		password = _password;
+	public static PicasaImagesLoader GetInstance() {
+		if (instance == null) {
+			synchronized (PicasaImagesLoader.class) {
+				if (instance == null) {
+					instance = new PicasaImagesLoader();
+				}
+			}
+		}
+		return instance;
 	}
 
 	@Override
@@ -55,6 +62,7 @@ public class PicasaImagesLoader extends GeneralImageLoader {
 				if (feed != null) {
 					List<GphotoEntry> Gphoto = (List<GphotoEntry>) feed
 							.getEntries();
+					ScrapApp.GetInstance().CachePicasaImages(Gphoto.size());
 					for (int i = 0; i < Gphoto.size(); i++) {
 						PhotoEntry photo = new PhotoEntry(Gphoto.get(i));
 						ImageItem current = new ImageItem(photo
@@ -87,6 +95,7 @@ public class PicasaImagesLoader extends GeneralImageLoader {
 		super.onPostExecute(result);
 		// let the UI know about loading finished
 		parFragment.OnImagesLoadComplete(PictureSelect.picasa);
+		instance = null;
 	}
 
 	// performs login and returns AlbumFeed
@@ -114,9 +123,5 @@ public class PicasaImagesLoader extends GeneralImageLoader {
 			e.printStackTrace();
 		}
 		return feed;
-	}
-
-	public static PicasaImagesLoader GetInstance() {
-		return _instance;
 	}
 }

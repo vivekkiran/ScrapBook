@@ -17,12 +17,19 @@ import el.solde.scrapbook.adapters.ImageItem;
 import el.solde.scrapbook.instagram.InstaLoginDialog;
 
 public class InstagramImagesLoader extends GeneralImageLoader {
+	// Here we create ImageItem for each image from INSTAGRAM, load there
+	// thumbnail url and real url
+	// return ImageItem[] array with items
+	// this is some kind of singletone, but every time we've finished checking
+	// images in gallery,
+	// we set instance to NULL to be able to execute once more
 
 	private String insta_token;
 	private String insta_id;
 	private PictureSelect parFragment;
+	private static InstagramImagesLoader instance;
 
-	public InstagramImagesLoader() {
+	private InstagramImagesLoader() {
 		parFragment = GetParentFrament();
 		if (ScrapApp.GetPreference().getString("insta_token", "") == "") {
 			InstaLoginDialog insta_login = new InstaLoginDialog();
@@ -32,6 +39,17 @@ public class InstagramImagesLoader extends GeneralImageLoader {
 			insta_token = ScrapApp.GetPreference().getString("insta_token", "");
 			insta_id = ScrapApp.GetPreference().getString("insta_id", "");
 		}
+	}
+
+	public static InstagramImagesLoader GetInstance() {
+		if (instance == null) {
+			synchronized (InstagramImagesLoader.class) {
+				if (instance == null) {
+					instance = new InstagramImagesLoader();
+				}
+			}
+		}
+		return instance;
 	}
 
 	// for array which is associated with Gridview
@@ -75,7 +93,7 @@ public class InstagramImagesLoader extends GeneralImageLoader {
 		super.onPostExecute(result);
 		// let UI know that everything uploaded
 		parFragment.OnImagesLoadComplete(PictureSelect.instagram);
-
+		instance = null;
 	}
 
 	// this method gets user Media. uses access token and user id as paramters
@@ -95,6 +113,7 @@ public class InstagramImagesLoader extends GeneralImageLoader {
 			JSONArray imageObjs = retrieved.getJSONArray("data");
 			// get every data JSON object, get images object, get thumbnail and
 			// standart resolution of image
+			ScrapApp.GetInstance().CacheInstagramImages(imageObjs.length());
 			for (int r = 0; r < imageObjs.length(); r++) {
 				// get "images" Object
 				ImageItem current = new ImageItem(imageObjs.getJSONObject(r)

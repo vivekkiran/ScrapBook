@@ -8,7 +8,7 @@
     <GridView
         android:id="@+id/gallery_grid_view"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"        
+        android:layout_height="950dp"        
         android:gravity="center"
         android:horizontalSpacing="8dp"
         android:numColumns="3"
@@ -28,7 +28,7 @@
     <HorizontalScrollView
         android:id="@+id/selected_pics_scroll"
         android:layout_width="fill_parent"
-        android:layout_height="80dp"
+        android:layout_height="200dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:background="@drawable/selected_board" >

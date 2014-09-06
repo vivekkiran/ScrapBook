@@ -1,5 +1,6 @@
 package el.solde.scrapbook.activity;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -37,6 +38,13 @@ public class PictureSelect extends Fragment {
 	public final static int facebook = 2;
 	public final static int picasa = 3;
 	public final static int instagram = 4;
+
+	// Hold a reference to the current animator,
+	// so that it can be canceled mid-way.
+	private Animator mCurrentAnimator;
+
+	// Retrieve and cache the system's default "short" animation time.
+	private int mShortAnimationDuration;
 
 	// FB session state change listener
 	private Session.StatusCallback callback = new Session.StatusCallback() {
@@ -145,6 +153,8 @@ public class PictureSelect extends Fragment {
 
 		View view = inflater
 				.inflate(R.layout.pictures_select, container, false);
+		mShortAnimationDuration = getResources().getInteger(
+				android.R.integer.config_shortAnimTime);
 		switch (currentService) {
 		case gallery: {
 			if (GalleryLinksLoader.GetInstance().getStatus() != AsyncTask.Status.RUNNING)
@@ -162,13 +172,13 @@ public class PictureSelect extends Fragment {
 		}
 		case picasa: {
 			// check if we have images in cache
-			PicasaImagesLoader loader = new PicasaImagesLoader();
-			loader.execute();
+			if (PicasaImagesLoader.GetInstance().getStatus() != AsyncTask.Status.RUNNING)
+				PicasaImagesLoader.GetInstance().execute();
 			break;
 		}
 		case instagram: {
-			InstagramImagesLoader insta = new InstagramImagesLoader();
-			insta.execute();
+			if (InstagramImagesLoader.GetInstance().getStatus() != AsyncTask.Status.RUNNING)
+				InstagramImagesLoader.GetInstance().execute();
 			break;
 		}
 		}
@@ -209,21 +219,22 @@ public class PictureSelect extends Fragment {
 					gridImg.setVisibility(View.GONE);
 				} else {
 					authButton1.setVisibility(View.GONE);
-					new FacebookImagesLoader().execute();
+					if (FacebookImagesLoader.GetInstance().getStatus() != AsyncTask.Status.RUNNING)
+						FacebookImagesLoader.GetInstance().execute();
 				}
 				break;
 			}
 			case picasa: {
 				currentService = picasa;
 				// check if we have images in cache
-				PicasaImagesLoader loader = new PicasaImagesLoader();
-				loader.execute();
+				if (PicasaImagesLoader.GetInstance().getStatus() != AsyncTask.Status.RUNNING)
+					PicasaImagesLoader.GetInstance().execute();
 				break;
 			}
 			case instagram: {
 				currentService = instagram;
-				InstagramImagesLoader insta = new InstagramImagesLoader();
-				insta.execute();
+				if (InstagramImagesLoader.GetInstance().getStatus() != AsyncTask.Status.RUNNING)
+					InstagramImagesLoader.GetInstance().execute();
 				break;
 			}
 			}
@@ -241,7 +252,9 @@ public class PictureSelect extends Fragment {
 			if (loginButton.isShown()) {
 				loginButton.setVisibility(View.GONE);
 			}
-			new FacebookImagesLoader().execute();
+			if (FacebookImagesLoader.GetInstance().getStatus() != AsyncTask.Status.RUNNING) {
+				FacebookImagesLoader.GetInstance().execute();
+			}
 		} else if (state.isClosed()) {
 			if (!loginButton.isShown()) {
 				loginButton.setVisibility(View.VISIBLE);
@@ -282,6 +295,7 @@ public class PictureSelect extends Fragment {
 					params.putString("imageUrl", clickedItem.source());
 					imgDisplay.setArguments(params);
 					imgDisplay.show(getFragmentManager(), null);
+					// zoomImageFromThumb(view);
 				}
 			}
 		});

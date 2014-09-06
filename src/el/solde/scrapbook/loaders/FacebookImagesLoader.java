@@ -19,13 +19,28 @@ import el.solde.scrapbook.adapters.ImageItem;
 
 //Here we create ImageItem for each image from gallery, load there thumbnail url and real url
 //return ImageItem[] array with items 
+//this is some kind of singletone, but every time we've finished checking images in gallery,
+//we set instance to NULL to be able to execute once more
 public class FacebookImagesLoader extends GeneralImageLoader {
 
 	// instance of parent fragment
 	PictureSelect parFragment;
 
-	public FacebookImagesLoader() {
+	private static FacebookImagesLoader instance;
+
+	private FacebookImagesLoader() {
 		parFragment = GetParentFrament();
+	}
+
+	public static FacebookImagesLoader GetInstance() {
+		if (instance == null) {
+			synchronized (FacebookImagesLoader.class) {
+				if (instance == null) {
+					instance = new FacebookImagesLoader();
+				}
+			}
+		}
+		return instance;
 	}
 
 	// sorting parameter
@@ -49,6 +64,8 @@ public class FacebookImagesLoader extends GeneralImageLoader {
 								try {
 									JSONArray photosArr = photos
 											.getJSONArray("data");
+									ScrapApp.GetInstance().CacheFaceBookImages(
+											photosArr.length());
 									for (int i = 0; i < photosArr.length(); i++) {
 										ImageItem current = new ImageItem(
 												photosArr.getJSONObject(i)
@@ -83,6 +100,7 @@ public class FacebookImagesLoader extends GeneralImageLoader {
 		super.onPostExecute(result);
 		// let the UI know about loading finished
 		parFragment.OnImagesLoadComplete(PictureSelect.facebook);
+		instance = null;
 	}
 
 }

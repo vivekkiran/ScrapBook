@@ -141,6 +141,11 @@ public class ScrapApp extends Application {
 		faceBookImages = _images;
 	}
 
+	// cache urls to images while app is alive
+	public void CacheFaceBookImages(int size) {
+		faceBookImages = new ArrayList<ImageItem>(size);
+	}
+
 	public void CacheFaceBookImage(ImageItem _image) {
 		if (faceBookImages != null)
 			faceBookImages.add(_image);
@@ -163,6 +168,11 @@ public class ScrapApp extends Application {
 		picasaImages = _images;
 	}
 
+	// cache urls to images while app is alive
+	public void CachePicasaImages(int size) {
+		picasaImages = new ArrayList<ImageItem>(size);
+	}
+
 	public void CachePicasaImage(ImageItem _image) {
 		if (picasaImages != null)
 			picasaImages.add(_image);
@@ -183,6 +193,11 @@ public class ScrapApp extends Application {
 	// cache urls to images while app is alive
 	public void CacheInstagramImages(List<ImageItem> _images) {
 		instagramImages = _images;
+	}
+
+	// cache urls to images while app is alive
+	public void CacheInstagramImages(int size) {
+		instagramImages = new ArrayList<ImageItem>(size);
 	}
 
 	public void CacheInstagramImage(ImageItem _image) {

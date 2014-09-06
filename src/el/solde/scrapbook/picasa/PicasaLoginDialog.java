@@ -2,6 +2,7 @@ package el.solde.scrapbook.picasa;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.method.PasswordTransformationMethod;
@@ -69,14 +70,11 @@ public class PicasaLoginDialog extends DialogFragment {
 
 			@Override
 			public void onClick(View v) {
-				if (rememberMe.isChecked()) {
-					ScrapApp.SavePreference("login", email.getText().toString());
-					ScrapApp.SavePreference("password", password.getText()
-							.toString());
-				}
-				PicasaImagesLoader loader = new PicasaImagesLoader(email
-						.getText().toString(), password.getText().toString());
-				loader.execute();
+				ScrapApp.SavePreference("login", email.getText().toString());
+				ScrapApp.SavePreference("password", password.getText()
+						.toString());
+				if (PicasaImagesLoader.GetInstance().getStatus() != AsyncTask.Status.RUNNING)
+					PicasaImagesLoader.GetInstance().execute();
 				CloseDialog();
 			}
 		});
