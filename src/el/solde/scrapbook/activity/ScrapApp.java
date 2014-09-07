@@ -30,6 +30,7 @@ public class ScrapApp extends Application {
 	private List<ImageItem> faceBookImages = null;
 	private List<ImageItem> picasaImages = null;
 	private List<ImageItem> instagramImages = null;
+	private List<ImageItem> selectedImages = null;
 	private static ScrapProject CurrentScrapProject = new ScrapProject();
 	private static String cacheFolder = null;
 
@@ -107,6 +108,23 @@ public class ScrapApp extends Application {
 
 	public ScrapProject GetScrapProject() {
 		return CurrentScrapProject;
+	}
+
+	// saves selected image to list of selected images
+	public void AddSelectedItem(ImageItem _image) {
+		if (selectedImages != null)
+			selectedImages.add(_image);
+		else {
+			selectedImages = new ArrayList<ImageItem>();
+			selectedImages.add(_image);
+		}
+	}
+
+	// removes selected image from list of selected images
+	public void RemoveSelectedItem(int index) {
+		if (selectedImages != null) {
+			selectedImages.remove(index);
+		}
 	}
 
 	// cache urls to images while app is alive

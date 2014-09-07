@@ -247,28 +247,28 @@ containing a value of this type.
         public static final int tab4_bar=0x7f020040;
     }
     public static final class id {
-        public static final int Btn_camera=0x7f04003d;
-        public static final int Btn_facebook=0x7f040041;
-        public static final int Btn_flickr=0x7f040045;
-        public static final int Btn_gallery=0x7f04003f;
-        public static final int Btn_picasa=0x7f040043;
+        public static final int Btn_camera=0x7f04003e;
+        public static final int Btn_facebook=0x7f040042;
+        public static final int Btn_flickr=0x7f040046;
+        public static final int Btn_gallery=0x7f040040;
+        public static final int Btn_picasa=0x7f040044;
         public static final int Btn_picture_select=0x7f040007;
         public static final int Btn_select_service=0x7f040005;
         public static final int Image=0x7f040025;
-        public static final int Last_scrap_btn=0x7f040047;
+        public static final int Last_scrap_btn=0x7f040048;
         public static final int LoginButton=0x7f040033;
-        public static final int Logo=0x7f04003a;
+        public static final int Logo=0x7f04003b;
         public static final int Pin=0x7f040022;
         public static final int addBtn=0x7f040029;
         public static final int add_image_btn=0x7f040028;
-        public static final int all_container=0x7f040039;
+        public static final int all_container=0x7f04003a;
         public static final int authButton=0x7f040035;
-        public static final int btn_camera=0x7f04003c;
+        public static final int btn_camera=0x7f04003d;
         public static final int btn_combine_image=0x7f040008;
-        public static final int btn_facebook=0x7f040040;
-        public static final int btn_gallery=0x7f04003e;
-        public static final int btn_instagram=0x7f040044;
-        public static final int btn_picasa=0x7f040042;
+        public static final int btn_facebook=0x7f040041;
+        public static final int btn_gallery=0x7f04003f;
+        public static final int btn_instagram=0x7f040045;
+        public static final int btn_picasa=0x7f040043;
         public static final int btn_picture_select=0x7f040006;
         public static final int btn_save_or_upload=0x7f040009;
         public static final int btn_select_service=0x7f040004;
@@ -299,7 +299,7 @@ containing a value of this type.
         public static final int image_display_dia=0x7f040023;
         public static final int insta_login=0x7f04002a;
         public static final int large=0x7f040002;
-        public static final int last_scrap_btn=0x7f040046;
+        public static final int last_scrap_btn=0x7f040047;
         public static final int loading=0x7f040026;
         public static final int loginButton=0x7f040032;
         public static final int loginTB=0x7f04002f;
@@ -309,14 +309,15 @@ containing a value of this type.
         public static final int passwordTB=0x7f040030;
         public static final int picker_subtitle=0x7f040019;
         public static final int pin=0x7f040021;
+        public static final int pinned_selected_item=0x7f040038;
         public static final int rememberMe=0x7f040031;
         public static final int remove_image_btn=0x7f040027;
         public static final int selectedImage=0x7f040020;
         public static final int selectedPicItem=0x7f04001f;
         public static final int selected_pics_scroll=0x7f040036;
         public static final int selected_pics_view=0x7f040037;
-        public static final int service_buttons_container=0x7f04003b;
-        public static final int service_select_container=0x7f040038;
+        public static final int service_buttons_container=0x7f04003c;
+        public static final int service_select_container=0x7f040039;
         public static final int small=0x7f040000;
         public static final int tabs_layout=0x7f040003;
     }
@@ -344,8 +345,9 @@ containing a value of this type.
         public static final int pic_grid_item=0x7f030014;
         public static final int picasa_login_dialog=0x7f030015;
         public static final int pictures_select=0x7f030016;
-        public static final int save_or_upload=0x7f030017;
-        public static final int service_select=0x7f030018;
+        public static final int pinned_selected_item=0x7f030017;
+        public static final int save_or_upload=0x7f030018;
+        public static final int service_select=0x7f030019;
     }
     public static final class string {
         public static final int app_id=0x7f07001e;

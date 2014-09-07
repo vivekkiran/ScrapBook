@@ -19,10 +19,13 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
+import el.solde.scrapbook.adapters.ImageItem;
+
 public class ImageDisplayDialog extends DialogFragment implements
 		OnClickListener {
 	DisplayImageOptions options;
 	String bigImage;
+	int imagePosition;
 
 	public ImageDisplayDialog() {
 		// TODO Auto-generated constructor stub
@@ -32,8 +35,32 @@ public class ImageDisplayDialog extends DialogFragment implements
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		ImageItem clickedItem = null;
+		imagePosition = getArguments().getInt("imageItem");
+		switch (PictureSelect.GetCurrentService()) {
+		case PictureSelect.gallery: {
+			clickedItem = ScrapApp.GetInstance().GetGalleryImages()
+					.get(imagePosition);
+			break;
+		}
+		case PictureSelect.facebook: {
+			clickedItem = ScrapApp.GetInstance().GetFaceBookImages()
+					.get(imagePosition);
+			break;
+		}
+		case PictureSelect.picasa: {
+			clickedItem = ScrapApp.GetInstance().GetPicasaImages()
+					.get(imagePosition);
+			break;
+		}
+		case PictureSelect.instagram: {
+			clickedItem = ScrapApp.GetInstance().GetInstagramImages()
+					.get(imagePosition);
+			break;
+		}
+		}
 		// get url to image
-		bigImage = getArguments().getString("imageUrl");
+		bigImage = clickedItem.source();
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		// Get the layout inflater
 		LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -42,6 +69,9 @@ public class ImageDisplayDialog extends DialogFragment implements
 		ImageButton close_btn = (ImageButton) dialogView
 				.findViewById(R.id.remove_image_btn);
 		close_btn.setOnClickListener(this);
+		ImageButton add_btn = (ImageButton) dialogView
+				.findViewById(R.id.add_image_btn);
+		add_btn.setOnClickListener(this);
 		final ProgressBar spinner = (ProgressBar) dialogView
 				.findViewById(R.id.loading);
 
@@ -101,9 +131,14 @@ public class ImageDisplayDialog extends DialogFragment implements
 		switch (v.getId()) {
 		case R.id.remove_image_btn: {
 			CloseDialog();
+			break;
 		}
 		case R.id.add_image_btn: {
-
+			PictureSelect parentFrag = (PictureSelect) getTargetFragment();
+			parentFrag.OnSelectedImagesChange(imagePosition,
+					PictureSelect.action_add);
+			CloseDialog();
+			break;
 		}
 		}
 

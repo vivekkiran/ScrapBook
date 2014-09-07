@@ -37,7 +37,12 @@
             android:id="@+id/selected_pics_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:paddingTop="15dp"
+            android:paddingRight="10dp"
+            android:paddingEnd="10dp"
+            android:paddingLeft="37dp"
+            android:paddingStart="37dp"            
+            android:orientation="vertical" >
         </LinearLayout>
     </ScrollView>
     

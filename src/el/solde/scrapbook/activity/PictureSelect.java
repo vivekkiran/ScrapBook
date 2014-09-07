@@ -11,7 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -38,6 +41,9 @@ public class PictureSelect extends Fragment {
 	public final static int facebook = 2;
 	public final static int picasa = 3;
 	public final static int instagram = 4;
+	// selected images actions
+	public final static int action_delete = 0;
+	public final static int action_add = 1;
 
 	// Hold a reference to the current animator,
 	// so that it can be canceled mid-way.
@@ -262,6 +268,64 @@ public class PictureSelect extends Fragment {
 		}
 	}
 
+	// method is called when changes occur to selected images list
+	public void OnSelectedImagesChange(int _imagePosition, int _action) {
+		updateSelectedImages(_imagePosition, _action);
+	}
+
+	// depending on action add or remove item from SelectedImagesList
+	private void updateSelectedImages(int _imagePosition, int _action) {
+		switch (_action) {
+		case action_add: {
+			// based on selected service we add item to SelectedList
+			ImageItem item = null;
+			switch (GetCurrentService()) {
+			case gallery: {
+				item = ScrapApp.GetInstance().GetGalleryImages()
+						.get(_imagePosition);
+				ScrapApp.GetInstance().AddSelectedItem(item);
+				break;
+			}
+			case facebook: {
+				item = ScrapApp.GetInstance().GetFaceBookImages()
+						.get(_imagePosition);
+				ScrapApp.GetInstance().AddSelectedItem(item);
+				break;
+			}
+			case picasa: {
+				item = ScrapApp.GetInstance().GetPicasaImages()
+						.get(_imagePosition);
+				ScrapApp.GetInstance().AddSelectedItem(item);
+				break;
+			}
+			case instagram: {
+				item = ScrapApp.GetInstance().GetInstagramImages()
+						.get(_imagePosition);
+				ScrapApp.GetInstance().AddSelectedItem(item);
+				break;
+			}
+			}
+			FrameLayout itemToAdd = (FrameLayout) LayoutInflater.from(
+					getActivity()).inflate(R.layout.pinned_selected_item, null);
+			if (itemToAdd != null) {
+				ImageView thumb_image = (ImageView) itemToAdd
+						.findViewById(R.id.image);
+				ScrapApp.getImageLoader().displayImage(item.thumbnail(),
+						thumb_image);
+			}
+			LinearLayout selected_scroll = (LinearLayout) getView()
+					.findViewById(R.id.selected_pics_view);
+			selected_scroll.addView(itemToAdd);
+			break;
+		}
+
+		case action_delete: {
+
+			break;
+		}
+		}
+	}
+
 	// this method is called by every image loader, when loading is complete and
 	// and images links are cached in SrapApp
 	// _service - this shows what Loader called method, if it equals
@@ -291,8 +355,10 @@ public class PictureSelect extends Fragment {
 				ImageItem clickedItem = photosAdapter.getItem(position);
 				if (clickedItem != null) {
 					ImageDisplayDialog imgDisplay = new ImageDisplayDialog();
+					imgDisplay.setTargetFragment(getInstance(), 0);
 					Bundle params = new Bundle();
-					params.putString("imageUrl", clickedItem.source());
+					params.putInt("imageItem", position);
+					// params.putString("imageUrl", clickedItem.source());
 					imgDisplay.setArguments(params);
 					imgDisplay.show(getFragmentManager(), null);
 					// zoomImageFromThumb(view);
