@@ -8,7 +8,7 @@
     <GridView
         android:id="@+id/gallery_grid_view"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"        
+        android:layout_height="370dp"        
         android:gravity="center"
         android:horizontalSpacing="8dp"
         android:numColumns="3"
@@ -25,20 +25,14 @@
         android:layout_marginTop="30dp"
         android:visibility="gone" />
 
-    <HorizontalScrollView
-        android:id="@+id/selected_pics_scroll"
+    <el.solde.scrapbook.activity.HorizontalListView
+        android:id="@+id/selected_pics_list_H"
+        android:paddingTop="20dp"
         android:layout_width="fill_parent"
-        android:layout_height="80dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:background="@drawable/selected_board" >
-
-        <LinearLayout
-            android:id="@+id/selected_pics_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-        </LinearLayout>
-    </HorizontalScrollView>
+        android:layout_height="90dp"                                
+        android:background="@drawable/selected_board"
+        android:layout_alignParentBottom="true">
+        
+    </el.solde.scrapbook.activity.HorizontalListView>
     
 </RelativeLayout>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical|center_horizontal"
+    android:background="@drawable/bg_tab1"
+    android:id="@+id/service_select_container">
+    
+<LinearLayout     
+    android:id="@+id/all_container" 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"    
+    android:orientation="vertical"
+    android:gravity="center_vertical|center_horizontal" >
+
+    <ImageView
+        android:layout_width="220dp"
+        android:layout_height="90dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:contentDescription="@+id/Logo"
+        android:src="@drawable/logo" />
+
+    <LinearLayout
+        android:layout_width="470dp"
+        android:layout_height="160dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"                  
+        android:id="@+id/service_buttons_container"                      
+        android:gravity="center_vertical|center_horizontal"
+        android:background="@drawable/board"
+        android:orientation="vertical" >
+        
+        <RelativeLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            >
+
+        <ImageButton
+            android:id="@+id/btn_gallery"
+            android:layout_width="170dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_alignParentTop="true"            
+            android:layout_toRightOf="@+id/btn_camera"
+            android:layout_toEndOf="@+id/btn_camera"
+            android:background="@drawable/btn_gallery"
+            android:contentDescription="@+id/Btn_gallery" />
+
+        <ImageButton
+            android:id="@+id/btn_camera"
+            android:layout_width="170dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+           
+            android:background="@drawable/btn_camera"
+            android:contentDescription="@+id/Btn_camera" />
+
+</RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+             >
+
+        <ImageButton
+            android:id="@+id/btn_instagram"
+            android:layout_width="170dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_alignParentTop="true"            
+            android:layout_toEndOf="@+id/btn_facebook"    
+            android:layout_toRightOf="@+id/btn_facebook"
+            android:background="@drawable/btn_instagram"
+            android:contentDescription="@+id/Btn_flickr" />
+
+        <ImageButton
+            android:id="@+id/btn_facebook"
+            android:layout_width="170dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+
+            android:background="@drawable/btn_facebook"
+            android:contentDescription="@+id/Btn_facebook" />
+
+</RelativeLayout>
+
+        <RelativeLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            >
+
+        <ImageButton
+            android:id="@+id/btn_picasa"
+            android:layout_width="170dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/btn_picasa"
+            android:contentDescription="@+id/Btn_picasa" />
+                    
+        </RelativeLayout>
+             
+    </LinearLayout>    
+
+</LinearLayout>
+<ImageButton
+        android:id="@+id/last_scrap_btn"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_alignRight="@+id/all_container"
+        android:layout_alignEnd="@+id/all_container"
+        android:layout_alignBottom="@+id/all_container"
+        android:background="@drawable/last_scrap"
+        android:contentDescription="@+id/Last_scrap_btn" />
+</RelativeLayout>

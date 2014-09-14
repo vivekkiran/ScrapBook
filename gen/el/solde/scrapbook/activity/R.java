@@ -314,8 +314,8 @@ containing a value of this type.
         public static final int remove_image_btn=0x7f040027;
         public static final int selectedImage=0x7f040020;
         public static final int selectedPicItem=0x7f04001f;
-        public static final int selected_pics_scroll=0x7f040036;
-        public static final int selected_pics_view=0x7f040037;
+        public static final int selected_pics_list=0x7f040037;
+        public static final int selected_pics_list_H=0x7f040036;
         public static final int service_buttons_container=0x7f04003c;
         public static final int service_select_container=0x7f040039;
         public static final int small=0x7f040000;

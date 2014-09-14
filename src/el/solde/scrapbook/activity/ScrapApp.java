@@ -16,7 +16,6 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import el.solde.scrapbook.adapters.ImageItem;
 
@@ -82,11 +81,8 @@ public class ScrapApp extends Application {
 	}
 
 	public void init() {
-		cacheFolder = StorageUtils.getOwnCacheDirectory(
-				getApplicationContext(),
-				Environment.getExternalStorageDirectory() + File.separator
-						+ "ScrapBook" + File.separator + "Cache")
-				.getAbsolutePath();
+		cacheFolder = Environment.getExternalStorageDirectory()
+				+ File.separator + "ScrapBook" + File.separator + "Cache";
 		File cacheDir = new File(cacheFolder);
 		// Create global configuration and initialize ImageLoader with this
 		// configuration

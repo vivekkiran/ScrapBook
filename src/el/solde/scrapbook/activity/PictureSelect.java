@@ -11,10 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -23,6 +21,7 @@ import com.facebook.widget.LoginButton;
 
 import el.solde.scrapbook.adapters.ImageItem;
 import el.solde.scrapbook.adapters.PhotosAdapter;
+import el.solde.scrapbook.adapters.SelectedPicturesAdapter;
 import el.solde.scrapbook.loaders.FacebookImagesLoader;
 import el.solde.scrapbook.loaders.GalleryLinksLoader;
 import el.solde.scrapbook.loaders.InstagramImagesLoader;
@@ -30,7 +29,7 @@ import el.solde.scrapbook.loaders.PicasaImagesLoader;
 
 public class PictureSelect extends Fragment {
 
-	// comunitacion interface between fragments
+	// communitacion interface between fragments
 	IFragmentCommunicationListener mCallBack;
 
 	// arrays of images and thumbs for grid
@@ -67,7 +66,13 @@ public class PictureSelect extends Fragment {
 	// visible layout by defult - gallery
 	private static int currentService = gallery;
 
-	private static PictureSelect _instance;
+	private static PictureSelect _instance = null;
+
+	private SelectedPicturesAdapter selectedPicsAdapter = null;
+
+	private ListView selectedListView = null;
+
+	private HorizontalListView selectedHorizontalListView = null;
 
 	public static PictureSelect newInstance(String title) {
 
@@ -161,6 +166,18 @@ public class PictureSelect extends Fragment {
 				.inflate(R.layout.pictures_select, container, false);
 		mShortAnimationDuration = getResources().getInteger(
 				android.R.integer.config_shortAnimTime);
+		// adapter for selected items
+		selectedPicsAdapter = new SelectedPicturesAdapter(getActivity());
+		if (getResources().getConfiguration().orientation == getResources()
+				.getConfiguration().ORIENTATION_LANDSCAPE) {
+			selectedListView = (ListView) view
+					.findViewById(R.id.selected_pics_list);
+			selectedListView.setAdapter(selectedPicsAdapter);
+		} else {
+			selectedHorizontalListView = (HorizontalListView) view
+					.findViewById(R.id.selected_pics_list_H);
+			selectedHorizontalListView.setAdapter(selectedPicsAdapter);
+		}
 		switch (currentService) {
 		case gallery: {
 			if (GalleryLinksLoader.GetInstance().getStatus() != AsyncTask.Status.RUNNING)
@@ -284,43 +301,38 @@ public class PictureSelect extends Fragment {
 				item = ScrapApp.GetInstance().GetGalleryImages()
 						.get(_imagePosition);
 				ScrapApp.GetInstance().AddSelectedItem(item);
+				selectedPicsAdapter.Add(item);
 				break;
 			}
 			case facebook: {
 				item = ScrapApp.GetInstance().GetFaceBookImages()
 						.get(_imagePosition);
 				ScrapApp.GetInstance().AddSelectedItem(item);
+				selectedPicsAdapter.Add(item);
 				break;
 			}
 			case picasa: {
 				item = ScrapApp.GetInstance().GetPicasaImages()
 						.get(_imagePosition);
 				ScrapApp.GetInstance().AddSelectedItem(item);
+				selectedPicsAdapter.Add(item);
 				break;
 			}
 			case instagram: {
 				item = ScrapApp.GetInstance().GetInstagramImages()
 						.get(_imagePosition);
 				ScrapApp.GetInstance().AddSelectedItem(item);
+				selectedPicsAdapter.Add(item);
 				break;
 			}
 			}
-			FrameLayout itemToAdd = (FrameLayout) LayoutInflater.from(
-					getActivity()).inflate(R.layout.pinned_selected_item, null);
-			if (itemToAdd != null) {
-				ImageView thumb_image = (ImageView) itemToAdd
-						.findViewById(R.id.image);
-				ScrapApp.getImageLoader().displayImage(item.thumbnail(),
-						thumb_image);
-			}
-			LinearLayout selected_scroll = (LinearLayout) getView()
-					.findViewById(R.id.selected_pics_view);
-			selected_scroll.addView(itemToAdd);
+			selectedPicsAdapter.notifyDataSetChanged();
 			break;
 		}
 
 		case action_delete: {
-
+			selectedPicsAdapter.Remove(_imagePosition);
+			selectedPicsAdapter.notifyDataSetChanged();
 			break;
 		}
 		}
