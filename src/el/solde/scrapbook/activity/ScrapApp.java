@@ -116,6 +116,13 @@ public class ScrapApp extends Application {
 		}
 	}
 
+	public List<ImageItem> GetSelectedItems() {
+		if (selectedImages != null)
+			return selectedImages;
+		else
+			return null;
+	}
+
 	// removes selected image from list of selected images
 	public void RemoveSelectedItem(int index) {
 		if (selectedImages != null) {

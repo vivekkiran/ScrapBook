@@ -26,7 +26,7 @@
         android:visibility="gone" />
 
     <el.solde.scrapbook.activity.HorizontalListView
-        android:id="@+id/selected_pics_list"
+        android:id="@+id/selected_pics_list_H"
         android:layout_width="fill_parent"
         android:layout_height="200dp"                                
         android:background="@drawable/selected_board"

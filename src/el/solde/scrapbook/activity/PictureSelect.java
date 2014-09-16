@@ -161,13 +161,20 @@ public class PictureSelect extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
 		View view = inflater
 				.inflate(R.layout.pictures_select, container, false);
 		mShortAnimationDuration = getResources().getInteger(
 				android.R.integer.config_shortAnimTime);
 		// adapter for selected items
-		selectedPicsAdapter = new SelectedPicturesAdapter(getActivity());
+		// if ScrapApp.selectedItems is not empty then something has been
+		// selected
+		// and it can be just orientation change
+		if (ScrapApp.GetInstance().GetSelectedItems() == null)
+			selectedPicsAdapter = new SelectedPicturesAdapter(getActivity());
+		else {
+			selectedPicsAdapter = new SelectedPicturesAdapter(getActivity(),
+					ScrapApp.GetInstance().GetSelectedItems());
+		}
 		if (getResources().getConfiguration().orientation == getResources()
 				.getConfiguration().ORIENTATION_LANDSCAPE) {
 			selectedListView = (ListView) view

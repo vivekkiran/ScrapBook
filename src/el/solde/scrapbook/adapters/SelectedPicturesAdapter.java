@@ -30,6 +30,12 @@ public class SelectedPicturesAdapter extends BaseAdapter {
 		items = new ArrayList<ImageItem>();
 	}
 
+	public SelectedPicturesAdapter(Context _context, List<ImageItem> _items) {
+		inflater = LayoutInflater.from(_context);
+		imageLoader = ScrapApp.getImageLoader();
+		items = _items;
+	}
+
 	@Override
 	public int getCount() {
 		if (items != null)
