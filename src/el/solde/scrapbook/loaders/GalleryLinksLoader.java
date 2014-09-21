@@ -168,15 +168,13 @@ public class GalleryLinksLoader extends GeneralImageLoader {
 			BitmapFactory.decodeStream(new FileInputStream(f), null, o);
 
 			// Find the correct scale value. It should be the power of 2.
-			final int REQUIRED_SIZE = 250;
-			int width_tmp = o.outWidth, height_tmp = o.outHeight;
+			final int REQUIRED_SIZE = 200;
+			int width_tmp = o.outWidth;
 			int scale = 1;
 			while (true) {
-				if (width_tmp / 2 < REQUIRED_SIZE
-						|| height_tmp / 2 < REQUIRED_SIZE)
+				if (width_tmp / 2 < REQUIRED_SIZE)
 					break;
 				width_tmp /= 2;
-				height_tmp /= 2;
 				scale++;
 			}
 

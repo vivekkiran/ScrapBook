@@ -169,12 +169,8 @@ public class PictureSelect extends Fragment {
 		// if ScrapApp.selectedItems is not empty then something has been
 		// selected
 		// and it can be just orientation change
-		if (ScrapApp.GetInstance().GetSelectedItems() == null)
-			selectedPicsAdapter = new SelectedPicturesAdapter(getActivity());
-		else {
-			selectedPicsAdapter = new SelectedPicturesAdapter(getActivity(),
-					ScrapApp.GetInstance().GetSelectedItems());
-		}
+		selectedPicsAdapter = new SelectedPicturesAdapter(getActivity(),
+				ScrapApp.GetInstance().GetSelectedItems());
 		if (getResources().getConfiguration().orientation == getResources()
 				.getConfiguration().ORIENTATION_LANDSCAPE) {
 			selectedListView = (ListView) view
@@ -307,29 +303,29 @@ public class PictureSelect extends Fragment {
 			case gallery: {
 				item = ScrapApp.GetInstance().GetGalleryImages()
 						.get(_imagePosition);
-				ScrapApp.GetInstance().AddSelectedItem(item);
 				selectedPicsAdapter.Add(item);
+
 				break;
 			}
 			case facebook: {
 				item = ScrapApp.GetInstance().GetFaceBookImages()
 						.get(_imagePosition);
-				ScrapApp.GetInstance().AddSelectedItem(item);
 				selectedPicsAdapter.Add(item);
+
 				break;
 			}
 			case picasa: {
 				item = ScrapApp.GetInstance().GetPicasaImages()
 						.get(_imagePosition);
-				ScrapApp.GetInstance().AddSelectedItem(item);
 				selectedPicsAdapter.Add(item);
+
 				break;
 			}
 			case instagram: {
 				item = ScrapApp.GetInstance().GetInstagramImages()
 						.get(_imagePosition);
-				ScrapApp.GetInstance().AddSelectedItem(item);
 				selectedPicsAdapter.Add(item);
+
 				break;
 			}
 			}

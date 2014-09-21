@@ -7,13 +7,15 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import el.solde.scrapbook.activity.PictureSelect;
 import el.solde.scrapbook.activity.R;
 import el.solde.scrapbook.activity.ScrapApp;
 
@@ -21,7 +23,6 @@ public class SelectedPicturesAdapter extends BaseAdapter {
 
 	private List<ImageItem> items;
 	private LayoutInflater inflater;
-	private FrameLayout listItem;
 	private ImageLoader imageLoader;
 
 	public SelectedPicturesAdapter(Context _context) {
@@ -60,6 +61,8 @@ public class SelectedPicturesAdapter extends BaseAdapter {
 	}
 
 	public void Add(ImageItem object) {
+		// this adds item also to global array in scrapapp, because items holds
+		// ref to ScrapApp.GetInstance().GetSelectedItems()
 		items.add(object);
 	}
 
@@ -70,6 +73,17 @@ public class SelectedPicturesAdapter extends BaseAdapter {
 			convertView = inflater.inflate(R.layout.pinned_selected_item, null);
 		}
 		ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
+		ImageButton remove_btn = (ImageButton) convertView
+				.findViewById(R.id.pin);
+		final int _position = position;
+		remove_btn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				PictureSelect.getInstance().OnSelectedImagesChange(_position,
+						PictureSelect.action_delete);
+			}
+		});
+
 		try {
 			imageLoader
 					.displayImage(items.get(position).thumbnail(), imageView);
