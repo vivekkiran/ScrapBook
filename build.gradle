@@ -26,6 +26,7 @@ android {
 
  packagingOptions {
 	    exclude 'libs/gdata/kinds/com.google.schemas.photos.2007.album'
+	    exclude 'META-INF/gdata/kinds/com.google.schemas.photos.2007.album'
 	  }
 
  sourceSets {
