@@ -48,6 +48,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.android.support:support-v4:22.0.0'
     compile 'com.facebook.android:facebook-android-sdk:3.23.1'
-    exclude 'libs/android-support-v4.jar'
-    exclude 'libs/android-support-v7-appcompat.jar'
+    exclude files('libs/android-support-v4.jar')
+    exclude files('libs/android-support-v7-appcompat.jar')
 }
