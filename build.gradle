@@ -24,6 +24,12 @@ android {
         targetSdkVersion 22
     }
 
+ packagingOptions {
+	    exclude 'libs/gdata/kinds/com.google.schemas.photos.2007.album'
+	    exclude 'android-support-v4.jar'
+	    exclude 'android-support-v7-appcompat.jar'
+	  }
+
  sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
